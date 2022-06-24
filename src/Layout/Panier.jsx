@@ -14,15 +14,21 @@ import {
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import * as React from "react";
 import theme from "../Theme/Light";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import { makeStyles } from "@mui/styles";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ErrorIcon from "@mui/icons-material/Error";
+import Paypal from "../Components/PayPal";
 
 function Panier(props) {
   const [total, setTotal] = React.useState(0);
 
   const [open, setOpen] = React.useState(false);
+  const [openValid, setOpenValid] = React.useState(false);
   const [disabled, setDisabled] = React.useState(true);
   const [codePromoValid, setCodePromoValid] = React.useState("");
-  const [codePromoUsed, setCodePromoUsed] = React.useState(false)
+  const [codePromoUsed, setCodePromoUsed] = React.useState(false);
+  const [paypalReturn, setPaypalReturn] = React.useState();
 
   const handleOpen = () => {
     setOpen(true);
@@ -32,22 +38,32 @@ function Panier(props) {
     setOpen(false);
   };
 
+  const handleCloseValid = () => {
+    setOpenValid(false);
+  };
+
   const remove = (data) => {
     props.removeFunc(data);
   };
 
-  const valid = () => {
+  const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  const valid = async (order, state) => {
     setOpen(false);
-    console.log({ content: props.panier, total: total.toFixed(2) });
+    console.log(order, state);
+    setPaypalReturn(state);
+    setOpenValid(true);
+    await sleep(2000);
+    window.location.replace("/");
   };
 
   const codePromoCheck = (e) => {
     if (e.target.value == "CODE1" && !codePromoUsed) {
-      setCodePromoUsed("CODE1")
-    } else if (!codePromoUsed){
+      setCodePromoUsed("CODE1");
+    } else if (!codePromoUsed) {
       setCodePromoValid("Le code n'est pas valide");
     } else {
-      setCodePromoValid("Code Promo déjà utilisé")
+      setCodePromoValid("Code Promo déjà utilisé");
     }
   };
 
@@ -61,11 +77,10 @@ function Panier(props) {
     props.panier.length > 0 ? setDisabled(false) : setDisabled(true);
   }, [props.panier]);
 
-
   React.useEffect(() => {
     setTotal(total * 0.75);
-  }, [codePromoUsed])
-  
+  }, [codePromoUsed]);
+
   const useStyles = makeStyles({
     price: {
       color: theme.palette.primary.main,
@@ -76,6 +91,10 @@ function Panier(props) {
       fontSize: "10px",
     },
   });
+
+  const deleteAll = () => {
+    props.deleteAll();
+  };
 
   const classes = useStyles();
   return (
@@ -147,8 +166,13 @@ function Panier(props) {
               </>
             );
           })}
+          <Divider sx={{ my: theme.spacing(2) }} />
 
-          <Divider sx={{ my : theme.spacing(2)}} />
+          <Typography>Vider</Typography>
+          <DeleteIcon
+            onClick={deleteAll}
+            sx={{ mx: theme.spacing(0), px: theme.spacing(0) }}
+          />
           <Typography>Code Promo</Typography>
           <TextField
             onBlur={(e) => codePromoCheck(e)}
@@ -180,7 +204,7 @@ function Panier(props) {
           >
             Annuler
           </Button>
-          <Button
+          {/* <Button
             onClick={valid}
             disabled={disabled}
             variant="contained"
@@ -192,8 +216,42 @@ function Panier(props) {
             }}
           >
             Commander
-          </Button>
+          </Button> */}
+
+          {disabled ? "" : <Paypal price={total} returnFunc={valid} />}
         </DialogActions>
+      </Dialog>
+
+      <Dialog
+        onClose={handleCloseValid}
+        open={openValid}
+        sx={{ pb: theme.spacing(4) }}
+      >
+        <Container
+          maxWidth="md"
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            direction: "column",
+          }}
+        >
+          {paypalReturn ? (
+            <>
+              {" "}
+              <CheckCircleIcon
+                sx={{ fontSize: "100px", color: "success.light" }}
+              />
+              <Typography> Commande Validée </Typography>{" "}
+            </>
+          ) : (
+            <>
+              {" "}
+              <ErrorIcon sx={{ fontSize: "100px", color: "error.light" }} />
+              <Typography> Erreur </Typography>
+            </>
+          )}
+        </Container>
       </Dialog>
     </>
   );

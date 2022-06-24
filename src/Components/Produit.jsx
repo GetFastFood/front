@@ -6,27 +6,39 @@ import AddIcon from "@mui/icons-material/Add";
 import React, { useState, useEffect } from "react";
 
 function Produit(props) {
-  const [quantity, setQuantity] = useState((props.quantity !== undefined && props.quantity > 0) ? props.quantity : 0);
+  var initQuan = props.panier.filter((obj) => obj.name == props.name).length;
+
+  const [quantity, setQuantity] = useState(
+    initQuan !== undefined && initQuan > 0 ? initQuan : 0
+  );
   const removeQuantity = () => {
     if (quantity > 0) {
-      setQuantity(quantity - 1)
-      props.removeFunc({ name : props.name, price :props.price, type : props.type, description : props.description})
+      setQuantity(quantity - 1);
+      props.removeFunc({
+        name: props.name,
+        price: props.price,
+        type: props.type,
+        description: props.description,
+      });
     }
   };
 
   const addQuantity = () => {
     setQuantity(quantity + 1);
-    props.addFunc({ name : props.name, price :props.price, type : props.type, description : props.description})
+    props.addFunc({
+      name: props.name,
+      price: props.price,
+      type: props.type,
+      description: props.description,
+    });
   };
 
   const useStyles = makeStyles({
     mainImage: {
-      width: "200px",
-      [theme.breakpoints.down("md")]: {
-        width: "200px",
-      },
+      height: "100px",
       [theme.breakpoints.down("sm")]: {
-        width: "100px",
+        width: "150px",
+        height: "auto",
       },
     },
 
@@ -47,6 +59,12 @@ function Produit(props) {
     },
   });
 
+  useEffect(() => {
+    if (props.panier.filter((obj) => obj.name == props.name).length == 0) {
+      setQuantity(0);
+    }
+  }, [props.panier]);
+
   const classes = useStyles();
 
   return (
@@ -61,7 +79,11 @@ function Produit(props) {
       className={classes.back}
     >
       <Grid item xs={4} alignSelf="center">
-        <img src={props.img} className={classes.mainImage} alt="Main article" />
+        <img
+          src={props.image}
+          className={classes.mainImage}
+          alt="Main article"
+        />
       </Grid>
       <Grid
         item

@@ -11,8 +11,11 @@ import theme from "../Theme/Light";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import FactCheckIcon from "@mui/icons-material/FactCheck";
 import StorefrontIcon from "@mui/icons-material/Storefront";
-import LogoutIcon from '@mui/icons-material/Logout';
+import LogoutIcon from "@mui/icons-material/Logout";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import logo from "../Images/logo.png";
+import API from "../API/API";
+
 import {
   Drawer,
   List,
@@ -32,8 +35,8 @@ function Header(props) {
   });
 
   const classes = useStyles();
-
   const [state, setState] = React.useState(false);
+  const classAPI = new API();
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -45,40 +48,108 @@ function Header(props) {
     setState(open);
   };
 
+  const disconnect = () => {
+    classAPI.disconnect();
+    window.location.replace("/");
+  };
+
   const list = (
     <List
       sx={{ flexDirection: "column", display: "flex", px: theme.spacing(3) }}
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
     >
-      <Link href="/compte" sx={{ textDecoration: "none", color: " inherit" }} className={classes.hover}>
-        <ListItem disablePadding >
-          <ListItemButton>
-            <AccountCircleIcon />
-          </ListItemButton>
-          <ListItemText>Mon Compte</ListItemText>
-        </ListItem>
-      </Link>
-      <Link href="/historique" sx={{ textDecoration: "none", color: " inherit" }} className={classes.hover}>
-      <ListItem disablePadding>
-        <ListItemButton>
-          <FactCheckIcon />
-        </ListItemButton>
-        <ListItemText>Mes Commandes</ListItemText>
-      </ListItem>
-      </Link>
-      <ListItem disablePadding>
-        <ListItemButton>
-          <StorefrontIcon />
-        </ListItemButton>
-        <ListItemText>Mon Restaurant</ListItemText>
-      </ListItem>
-      <ListItem disablePadding>
-        <ListItemButton>
-          <LogoutIcon />
-        </ListItemButton>
-        <ListItemText>Se Déconnecter</ListItemText>
-      </ListItem>
+      {localStorage.getItem("login") === "true" ? (
+        <>
+          <Link
+            href="/compte"
+            sx={{ textDecoration: "none", color: " inherit" }}
+            className={classes.hover}
+          >
+            <ListItem disablePadding>
+              <ListItemButton>
+                <AccountCircleIcon />
+              </ListItemButton>
+              <ListItemText>Mon Compte</ListItemText>
+            </ListItem>
+          </Link>
+
+          {localStorage.getItem("role") === "role_client" ? (
+            <Link
+              href="/historique"
+              sx={{ textDecoration: "none", color: " inherit" }}
+              className={classes.hover}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <FactCheckIcon />
+                </ListItemButton>
+                <ListItemText>Historique de Commandes</ListItemText>
+              </ListItem>
+            </Link>
+          ) : (
+            ""
+          )}
+
+          {localStorage.getItem("role") === "role_livreur" ? (
+            <Link
+              href="/livreur/commandes"
+              sx={{ textDecoration: "none", color: " inherit" }}
+              className={classes.hover}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListAltIcon />
+                </ListItemButton>
+                <ListItemText>Commandes en Attente</ListItemText>
+              </ListItem>
+            </Link>
+          ) : (
+            ""
+          )}
+
+          {localStorage.getItem("role") === "role_restaurant" ? (
+            <ListItem disablePadding>
+              <ListItemButton>
+                <StorefrontIcon />
+              </ListItemButton>
+              <ListItemText>Mon Restaurant</ListItemText>
+            </ListItem>
+          ) : (
+            ""
+          )}
+        </>
+      ) : (
+        ""
+      )}
+
+      {localStorage.getItem("login") === "true" ? (
+        <Link
+          sx={{ textDecoration: "none", color: " inherit" }}
+          className={classes.hover}
+          onClick={disconnect}
+        >
+          <ListItem disablePadding>
+            <ListItemButton>
+              <LogoutIcon />
+            </ListItemButton>
+            <ListItemText>Se Déconnecter</ListItemText>
+          </ListItem>{" "}
+        </Link>
+      ) : (
+        <Link
+          href="/connexion"
+          sx={{ textDecoration: "none", color: " inherit" }}
+          className={classes.hover}
+        >
+          <ListItem disablePadding>
+            <ListItemButton>
+              <LogoutIcon />
+            </ListItemButton>
+            <ListItemText>Se Connecter</ListItemText>
+          </ListItem>
+        </Link>
+      )}
     </List>
   );
   return (

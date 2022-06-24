@@ -8,7 +8,7 @@ import {
 import TextField from "@mui/material/TextField";
 import theme from "../../Theme/Light.jsx";
 
-function Article(props) {
+function CreerArticle(props) {
   return (
     <Container
       maxWidth="sm"
@@ -95,4 +95,4 @@ function Article(props) {
   );
 }
 
-export default Article;
+export default CreerArticle;

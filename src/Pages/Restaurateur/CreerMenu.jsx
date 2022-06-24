@@ -8,7 +8,7 @@ import {
   import TextField from "@mui/material/TextField";
   import theme from "../../Theme/Light.jsx";
   
-  function Menu(props) {
+  function CreerMenu(props) {
     return (
       <Container
         maxWidth="sm"
@@ -86,5 +86,5 @@ import {
     );
   }
   
-  export default Menu;
+  export default CreerMenu;
   

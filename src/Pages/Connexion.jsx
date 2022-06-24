@@ -1,22 +1,19 @@
 import theme from "../Theme/Light.jsx";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import {
-  Link,
-  Button,
-  Divider,
-  Container,
-  FormControl,
-} from "@mui/material";
+import { Link, Button, Divider, Container, FormControl } from "@mui/material";
 import { useEffect, useState } from "react";
+import API from "../API/API";
 
 function Connexion() {
   const emailRegex = /\S+@\S+\.\S+/;
 
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [messageEmail, setMessageEmail] = useState("");
-  const [disabled, setDisabled] = useState(true)
+  const [disabled, setDisabled] = useState(true);
   const [values, setValues] = useState({ email: "", password: "" });
+  const [returnError, setReturnError] = useState('')
+  const classAPI = new API();
 
   useEffect(() => {
     Object.keys(values).some(function (k) {
@@ -26,19 +23,29 @@ function Connexion() {
       : setDisabled(false);
   }, [values]);
 
-
   const validateEmail = (event) => {
     const email = event.target.value;
     if (emailRegex.test(email)) {
       setIsValidEmail(true);
       setMessageEmail("");
-      setValues({...values, email : email})
+      setValues({ ...values, email: email });
     } else {
       setIsValidEmail(false);
       setMessageEmail("Entrez une adresse email valide");
     }
   };
-  
+
+  const valid = () => {
+    classAPI
+      .login(values.email, values.password)
+      .then(() => {
+        window.location.replace("/");
+      })
+      .catch((error) => {
+        console.log(error);
+        setReturnError("Erreur : Vérifier votre mot de passe. ")
+      });
+  };
 
   return (
     <Container
@@ -71,7 +78,9 @@ function Connexion() {
           variant="filled"
           type="password"
           sx={{ mt: theme.spacing(3) }}
-          onChange= {(e) => {setValues({...values, password : e.target.value})}}
+          onChange={(e) => {
+            setValues({ ...values, password: e.target.value });
+          }}
         />
       </FormControl>
       <Link
@@ -102,10 +111,15 @@ function Connexion() {
         }}
         variant="contained"
         disabled={disabled}
-        onClick={() => {console.log(values)}}
+        onClick={valid}
       >
         Connexion
       </Button>
+
+      <Typography variant="h6" sx={{color:"red"}}>
+        {returnError}
+      </Typography>
+
       <Divider
         sx={{
           my: theme.spacing(7),

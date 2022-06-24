@@ -79,7 +79,7 @@ function Menu(props) {
     props.addFunc({
       name: props.name,
       price: props.price,
-      type: "menus",
+      type: "menu",
       description: menuContent,
     });
   };
@@ -145,19 +145,23 @@ function Menu(props) {
             {props.content.map((typeArticle, index) => {
               return (
                 <>
-                  <FormLabel>{props.list[typeArticle].title}</FormLabel>
+                  <FormLabel>{typeArticle}</FormLabel>
                   <RadioGroup>
-                    {props.list[typeArticle].list.map((article) => (
-                      <FormControlLabel
-                        value={article.name}
-                        control={<Radio />}
-                        label={article.name}
-                        required
-                        onChange={(e) => {
-                          addToContent(e, index);
-                        }}
-                      />
-                    ))}
+                    {props.carte.article.map((article) => {
+                      if (article.type == typeArticle) {
+                        return (
+                          <FormControlLabel
+                            value={article.name}
+                            control={<Radio />}
+                            label={article.name}
+                            required
+                            onChange={(e) => {
+                              addToContent(e, index);
+                            }}
+                          />
+                        );
+                      }
+                    })}
                   </RadioGroup>
                 </>
               );

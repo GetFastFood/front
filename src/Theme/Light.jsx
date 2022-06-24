@@ -30,6 +30,15 @@ const theme = createTheme({
         },
       },
     },
+    MuiLink: {
+      styleOverrides: {
+        root: {
+          '&[disabled]': {
+            pointerEvents: 'none',
+          },
+        },
+      },
+    },
   },
 
   

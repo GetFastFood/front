@@ -14,6 +14,7 @@ import {
   FormControl,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
+import API from "../API/API";
 
 function Inscription(props) {
   const [messageEmail, setMessageEmail] = useState("");
@@ -23,6 +24,7 @@ function Inscription(props) {
   const [valuePassword, setValuePassword] = React.useState();
   const [valuePasswordVerif, setValuePasswordVerif] = React.useState();
   const [disabled, setDisabled] = useState(true);
+  const classAPI = new API();
 
   // The regular exprssion to validate the email pattern
   // It may not be 100% perfect but can catch most email pattern errors and assures that the form is mostly right
@@ -32,11 +34,12 @@ function Inscription(props) {
     /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{8,15}$/;
 
   var [values, setValues] = useState({
-    name: "",
+    lastname: "",
     firstname: "",
     email: "",
-    phone: "",
+    tel: "",
     password: "",
+    address: "",
     passwordCheck: false,
     role: "",
   });
@@ -66,10 +69,10 @@ function Inscription(props) {
     const phone = event.target.value;
     if (phoneRegex.test(phone)) {
       setMessagePhone("");
-      setValues({ ...values, phone: phone });
+      setValues({ ...values, tel: phone });
     } else {
       setMessagePhone("Entrez un numéro valide");
-      setValues({ ...values, phone: "" });
+      setValues({ ...values, tel: "" });
     }
   };
 
@@ -102,6 +105,15 @@ function Inscription(props) {
     }
   };
 
+  const submit = () => {
+    classAPI
+      .register(values)
+      .then((response) => {
+        console.log(response);
+        window.location.replace("/connexion");
+      })
+  };
+
   return (
     <Container
       maxWidth="sm"
@@ -126,7 +138,7 @@ function Inscription(props) {
           variant="filled"
           required
           onChange={(e) => {
-            setValues({ ...values, name: e.target.value });
+            setValues({ ...values, lastname: e.target.value });
           }}
         />
         <TextField
@@ -138,6 +150,18 @@ function Inscription(props) {
           required
           onChange={(e) => {
             setValues({ ...values, firstname: e.target.value });
+          }}
+        />
+
+        <TextField
+          fullWidth
+          id="outlined-basic"
+          label="Adresse"
+          variant="filled"
+          sx={{ mt: theme.spacing(3) }}
+          required
+          onChange={(e) => {
+            setValues({ ...values, address: e.target.value });
           }}
         />
 
@@ -201,9 +225,9 @@ function Inscription(props) {
             setValues({ ...values, role: e.target.value });
           }}
         >
-          <MenuItem value={"client"}>Utilisateur</MenuItem>
-          <MenuItem value={"livreur"}>Livreur</MenuItem>
-          <MenuItem value={"restaurant"}>Restaurant</MenuItem>
+          <MenuItem value={"role_client"}>Utilisateur</MenuItem>
+          <MenuItem value={"role_livreur"}>Livreur</MenuItem>
+          <MenuItem value={"role_restaurant"}>Restaurant</MenuItem>
         </Select>
       </FormControl>
       <Button
@@ -216,7 +240,7 @@ function Inscription(props) {
         }}
         variant="contained"
         disabled={disabled}
-        onClick={() => console.log(values)}
+        onClick={submit}
       >
         Inscription
       </Button>
