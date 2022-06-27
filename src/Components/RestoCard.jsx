@@ -30,7 +30,7 @@ function RestoCard(props) {
       "-" +
       now.getDate() +
       " " +
-      props.hourly[0].open
+      props.opening
   );
   const closing = new Date(
     now.getFullYear() +
@@ -39,7 +39,7 @@ function RestoCard(props) {
       "-" +
       now.getDate() +
       " " +
-      props.hourly[0].close
+      props.closing
   );
   const hourOpen = opening < now && closing > now;
 

@@ -42,13 +42,12 @@ function Compte(props) {
         if (JSON.parse(result)["refresh_token"]) {
           if (typeRequest == "edit") {
             classAPI.updateUser(localStorage.getItem("id"), values);
-            window.location.replace("/compte")
+            //  window.location.replace("/compte")
           }
           if (typeRequest == "delete") {
-            classAPI.deleteUser(localStorage.getItem("id"), true)
-            .then(() => {
-              window.location.replace("/")
-            })
+            classAPI.deleteUser(localStorage.getItem("id"), true).then(() => {
+              window.location.replace("/");
+            });
           }
         } else {
           setMessageMDP("Mot de passe incorrect");
@@ -223,6 +222,7 @@ function Compte(props) {
             id="demo-simple-select"
             label="Role"
             required
+            disabled={values.role == "role_restaurateur" ? true : ""}
             value={values.role == undefined ? "" : values.role}
             onChange={(e) => {
               setValues({ ...values, role: e.target.value });
@@ -230,6 +230,9 @@ function Compte(props) {
           >
             <MenuItem value={"role_client"}>Utilisateur</MenuItem>
             <MenuItem value={"role_livreur"}>Livreur</MenuItem>
+            <MenuItem disabled value={"role_restaurateur"}>
+              Restaurateur
+            </MenuItem>
           </Select>
         </FormControl>
 

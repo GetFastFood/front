@@ -9,6 +9,7 @@ import Tracker from "../Layout/Tracker";
 import Banner from "../Images/logoBanner.png";
 import API from "../API/API";
 import axios from "axios";
+import banner1 from "../Images/banner1.jpg";
 
 function Home(props) {
   const classAPI = new API();
@@ -22,6 +23,16 @@ function Home(props) {
 
   return (
     <div className="font-face-gm">
+      {/* <Container
+        maxWidth="false"
+        sx={{
+          backgroundImage: `url(${banner1})`,
+          backgroundSize : "100%",
+          backgroundPosition : "center",
+          mt: theme.spacing(1),
+          height: "40vh",
+        }}
+      ></Container> */}
       <Container
         maxWidth="false"
         sx={{
@@ -62,11 +73,13 @@ function Home(props) {
       <Container maxWidth="xl" sx={{ pb: theme.spacing(2) }}>
         <Grid container spacing={2}>
           {restos.map((element, i) => {
-            return (
-              <Grid item lg={3} md={4} sm={6} xs={12}>
-                <RestoCard {...element} />
-              </Grid>
-            );
+            if (element.status == "open") {
+              return (
+                <Grid item lg={3} md={4} sm={6} xs={12}>
+                  <RestoCard {...element} />
+                </Grid>
+              );
+            }
           })}
         </Grid>
       </Container>

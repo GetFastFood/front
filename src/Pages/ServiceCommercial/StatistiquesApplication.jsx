@@ -3,7 +3,7 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import API from "../../API/API";
 import Loading from "../../Components/Loading";
-import { Chart, Series } from "devextreme-react/chart";
+import { Chart, Series, ConstantLine, Label } from "devextreme-react/chart";
 
 function StatistiquesApplication(props) {
   const classAPI = new API();
@@ -104,6 +104,14 @@ function StatistiquesApplication(props) {
           type="bar"
           color="#FF961F"
         />
+        <ConstantLine
+            width={2}
+            value={countUser}
+            color="#8c8cff"
+            dashStyle="dash"
+          >
+            <Label text="Low Average" />
+          </ConstantLine>
       </Chart>
     </Container>
   );

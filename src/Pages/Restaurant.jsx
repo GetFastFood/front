@@ -76,6 +76,8 @@ function Restaurant(props) {
       });
       setTypes([...new Set(temp)]);
     }
+
+    console.log(resto)
   }, [resto]);
  
   return !loaded ? (

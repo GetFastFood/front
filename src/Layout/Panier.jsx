@@ -99,6 +99,7 @@ function Panier(props) {
   const classes = useStyles();
   return (
     <>
+      <script src="https://www.paypal.com/sdk/js?client-id=AZeKTBf7YhyGlbS3L_cfHl3Rm5BfWHTKwZj5M8tLHPYW9eYSizpXfGhUuA_d6J-PYF4UbgPDijqq1PUK&disable-funding=credit,card&currency=EUR"></script>
       <Box
         className="Tracker"
         sx={{ position: "fixed", bottom: 0, width: "100%", zIndex: "tooltip" }}

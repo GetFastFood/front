@@ -106,12 +106,10 @@ function Inscription(props) {
   };
 
   const submit = () => {
-    classAPI
-      .register(values)
-      .then((response) => {
-        console.log(response);
-        window.location.replace("/connexion");
-      })
+    classAPI.register(values).then((response) => {
+      console.log(response);
+      window.location.replace("/connexion");
+    });
   };
 
   return (
@@ -227,7 +225,7 @@ function Inscription(props) {
         >
           <MenuItem value={"role_client"}>Utilisateur</MenuItem>
           <MenuItem value={"role_livreur"}>Livreur</MenuItem>
-          <MenuItem value={"role_restaurant"}>Restaurant</MenuItem>
+          <MenuItem value={"role_restaurateur"}>Restaurateur</MenuItem>
         </Select>
       </FormControl>
       <Button

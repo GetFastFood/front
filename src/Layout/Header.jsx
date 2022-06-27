@@ -101,20 +101,26 @@ function Header(props) {
                 <ListItemButton>
                   <ListAltIcon />
                 </ListItemButton>
-                <ListItemText>Commandes en Attente</ListItemText>
+                <ListItemText>Commandes à Livrer</ListItemText>
               </ListItem>
             </Link>
           ) : (
             ""
           )}
 
-          {localStorage.getItem("role") === "role_restaurant" ? (
-            <ListItem disablePadding>
-              <ListItemButton>
-                <StorefrontIcon />
-              </ListItemButton>
-              <ListItemText>Mon Restaurant</ListItemText>
-            </ListItem>
+          {localStorage.getItem("role") === "role_restaurateur" ? (
+            <Link
+              href="/restaurateur/monrestaurant"
+              sx={{ textDecoration: "none", color: " inherit" }}
+              className={classes.hover}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <StorefrontIcon />
+                </ListItemButton>
+                <ListItemText>Mon Restaurant</ListItemText>
+              </ListItem>
+            </Link>
           ) : (
             ""
           )}
