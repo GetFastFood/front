@@ -35,6 +35,7 @@ import Compte from "./Pages/Compte";
 import DMZ from "./Pages/DMZ";
 import "./Fonts/gt-america-extended-medium.latin-webfont.woff";
 import PrivateRoute from "./API/PrivateRoute";
+import CommandesList from "./Pages/Restaurateur/CommandesList";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -105,18 +106,26 @@ root.render(
               element={<LivraisonRestaurant />}
             />
           </Route>
-         
-            <Route
-              path="/developpeurtiers/gestioncomposant/"
-              element={<GestionComposant />}
-            />
-          
+
+          <Route
+            path="/developpeurtiers/gestioncomposant/"
+            element={<PrivateRoute role="role_dev" />}
+          >
+            <Route path="/developpeurtiers/gestioncomposant/" element={<GestionComposant />} />
+          </Route>
 
           <Route
             path="/restaurateur/monrestaurant"
             element={<PrivateRoute role="role_restaurateur" />}
           >
             <Route path="/restaurateur/monrestaurant" element={<MonResto />} />
+          </Route>
+
+          <Route
+            path="/restaurateur/commandes"
+            element={<PrivateRoute role="role_restaurateur" />}
+          >
+            <Route path="/restaurateur/commandes" element={<CommandesList />} />
           </Route>
 
           {/* <Route path="/restaurateur/addarticle" element={<Article />} />
@@ -126,16 +135,25 @@ root.render(
         <Route path="/modifiermenu" element={<ModifierMenu />} /> */}
 
           <Route
-            path="/restaurateur/statsventes"
-            element={<StatistiquesVente />}
-          />
+            path="/technique/logs"
+            element={<PrivateRoute role="role_technique" />}
+          >
+            <Route path="/technique/logs" element={<StatistiquesLogs />} />
+          </Route>
 
-          <Route path="/technique/logs" element={<StatistiquesLogs />} />
+          <Route
+            path="/restaurateur/statsventes"
+            element={<PrivateRoute role="role_restaurateur" />}
+          >
+            <Route path="/restaurateur/statsventes" element={<StatistiquesVente />} />
+          </Route>
 
           <Route
             path="/commercial/statsapp"
-            element={<StatistiquesApplication />}
-          />
+            element={<PrivateRoute role="role_commercial" />}
+          >
+            <Route path="/commercial/statsapp" element={<StatistiquesApplication />} />
+          </Route>
 
           <Route path="/dmz" element={<DMZ />} />
           <Route path="*" element={<NotFound />} />

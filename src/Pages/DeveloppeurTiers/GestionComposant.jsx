@@ -73,7 +73,7 @@ function GestionComposant(props) {
         >
           Telecharger les composants
         </Button>
-        <Box sx={{ backgroundColor: "primary.main", boxShadow: 3, my: theme.spacing(5),  py: theme.spacing(2), mx: theme.spacing(2),px: theme.spacing(2), borderRadius: "10px"}}>
+        <Box sx={{ my: theme.spacing(5),  py: theme.spacing(2), mx: theme.spacing(2),px: theme.spacing(2)}}>
         <Typography
           variant="h5"
           component="p"
@@ -83,12 +83,12 @@ function GestionComposant(props) {
           }}
         >
           Nos composants :
+          <Box sx={{backgroundColor: "primary.main",  boxShadow: 3,borderRadius: "10px", my: theme.spacing(2),px: theme.spacing(2),  py: theme.spacing(2)}}>
           <Typography
             variant="h5"
             component="p"
             sx={{
               color: "primary.dark",
-              mt: theme.spacing(5),
               textAlign: "justify",
             }}
           >
@@ -106,12 +106,13 @@ function GestionComposant(props) {
             est utiliser pour les utilisateurs pour afficher l'historique de
             commande.
           </Typography>
+          </Box>
+          <Box sx={{backgroundColor: "primary.main",  boxShadow: 3,borderRadius: "10px", my: theme.spacing(2),px: theme.spacing(2), py: theme.spacing(2)}}>
           <Typography
             variant="h5"
             component="p"
             sx={{
               color: "primary.dark",
-              mt: theme.spacing(3),
               textAlign: "justify",
             }}
           >
@@ -128,13 +129,14 @@ function GestionComposant(props) {
             Ce composant permet d'afficher une animation lors du
             chargement d'une page.
           </Typography>
+          </Box>
+          <Box sx={{backgroundColor: "primary.main",  boxShadow: 3,borderRadius: "10px", my: theme.spacing(2),px: theme.spacing(2),  py: theme.spacing(2)}}>
           <Typography
             variant="h5"
             component="p"
             sx={{
               color: "primary.dark",
               textAlign: "justify",
-              mt: theme.spacing(3),
             }}
           >
             - Menu : 
@@ -149,13 +151,14 @@ function GestionComposant(props) {
           >
             Il permet d'afficher les menus de chaque restaurant.
           </Typography>
+          </Box>
+          <Box sx={{backgroundColor: "primary.main",  boxShadow: 3,borderRadius: "10px", my: theme.spacing(2),px: theme.spacing(2), py: theme.spacing(2)}}>
           <Typography
             variant="h5"
             component="p"
             sx={{
               color: "primary.dark",
               textAlign: "justify",
-              mt: theme.spacing(3),
             }}
           >
             - NouvelleCommande :
@@ -171,13 +174,14 @@ function GestionComposant(props) {
             Il permet au livreur d'accepeter ou de refuser
             une commande.
           </Typography>
+          </Box>
+          <Box sx={{backgroundColor: "primary.main",  boxShadow: 3,borderRadius: "10px", my: theme.spacing(2),px: theme.spacing(2),  py: theme.spacing(2)}}>
           <Typography
             variant="h5"
             component="p"
             sx={{
               color: "primary.dark",
               textAlign: "justify",
-              mt: theme.spacing(3),
             }}
           >
             
@@ -193,13 +197,14 @@ function GestionComposant(props) {
           >
              Il permet d'afficher les articles de chaque restaurant.
           </Typography>
+          </Box>
+          <Box sx={{backgroundColor: "primary.main",  boxShadow: 3,borderRadius: "10px", my: theme.spacing(2),px: theme.spacing(2),  py: theme.spacing(2)}}>
           <Typography
             variant="h5"
             component="p"
             sx={{
               color: "primary.dark",
               textAlign: "justify",
-              mt: theme.spacing(3),
             }}
           >
             - RestoCard :
@@ -216,6 +221,7 @@ function GestionComposant(props) {
              Ce composant permet d'afficher chaque restaurant, dans
             un bloc donné.
           </Typography>
+          </Box>
         </Typography>
         </Box>
       </Box>

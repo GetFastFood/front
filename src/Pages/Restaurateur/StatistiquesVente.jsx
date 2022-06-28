@@ -1,7 +1,7 @@
 import * as React from "react";
 import Typography from "@mui/material/Typography";
 import theme from "../../Theme/Light.jsx";
-import { Container } from "@mui/material";
+import { Container, Box } from "@mui/material";
 import { Chart, Series } from "devextreme-react/chart";
 import API from "../../API/API";
 import { useParams } from "react-router-dom";
@@ -10,8 +10,6 @@ import Loading from "../../Components/Loading";
 function StatistiquesVente(props) {
   const countarticle = {};
   const classAPI = new API();
-  const params = useParams();
-  const restoID = params.restoID;
   const [commande, setCommande] = React.useState([]);
   const [loaded, setLoaded] = React.useState(false);
   const [name, setName] = React.useState([]);
@@ -20,12 +18,24 @@ function StatistiquesVente(props) {
   const ventesJour = [];
   var objVente = {};
   var arrayVente = [];
+  const [IdResto, setIdResto] = React.useState();
+
   React.useEffect(() => {
-    classAPI.getCommande("62b1a668fe9e11112dc92faa").then(function (response) {
-      setCommande(response);
-      setLoaded(true);
-    });
+    classAPI
+      .getRestaurantByOwner(localStorage.getItem("id"))
+      .then(function (response) {
+        setIdResto(response.restaurant._id);
+        classAPI.getCommande(response.restaurant._id).then(function (response) {
+        setCommande(response);
+        setLoaded(true);
+        });
+      });
   }, []);
+
+  if(loaded){
+    console.log(IdResto)
+    console.log(commande)
+  }
 
   React.useEffect(() => {
     if (loaded) {
@@ -100,8 +110,9 @@ arrayVente.sort((a, b) => {
 }
 
   return !loaded ? (
-    <Loading/>
-   ) : (
+    <Loading />
+  ) : (
+    
     <Container>
       <Typography
         variant="h4"
@@ -114,31 +125,12 @@ arrayVente.sort((a, b) => {
       >
         Statistiques des Ventes
       </Typography>
+      <Box sx={{ backgroundColor: "primary.light", borderRadius: "10px", textAlign: "center" }}>
       <Typography
-        variant="h6"
+        variant="h5"
         component="p"
         sx={{
-          pb: theme.spacing(5),
-          color: "primary.dark",
-        }}
-      >
-        Produit le plus vendu : {max[0]} avec {max[1]} vente(s)
-      </Typography>
-      <Typography
-        variant="h6"
-        component="p"
-        sx={{
-          pb: theme.spacing(5),
-          color: "primary.dark",
-        }}
-      >
-        Produit le moins vendu : {min[0]} avec {min[1]} vente(s)
-      </Typography>
-      <Typography
-        variant="h6"
-        component="p"
-        sx={{
-          pb: theme.spacing(5),
+          pb: theme.spacing(1),
           color: "primary.dark",
         }}
       >
@@ -152,12 +144,33 @@ arrayVente.sort((a, b) => {
         variant="h6"
         component="p"
         sx={{
-          pb: theme.spacing(5),
+          pb: theme.spacing(1),
+          color: "White",
+        }}
+      >
+        Produit le plus vendu : {max[0]} avec {max[1]} vente(s)
+      </Typography>
+      <Typography
+        variant="h6"
+        component="p"
+        sx={{
+          pb: theme.spacing(1),
+          color: "white",
+        }}
+      >
+        Produit le moins vendu : {min[0]} avec {min[1]} vente(s)
+      </Typography>
+      </Box>
+      <Typography
+        variant="h5"
+        component="p"
+        sx={{
+          pt: theme.spacing(5),
           color: "primary.dark",
           textAlign: "center",
         }}
       >
-        Evolution des ventes :
+        Evolution des ventes de votre restaurant :
       </Typography>
       <Chart id="chart" dataSource={arrayVente}>
         <Series
@@ -170,6 +183,7 @@ arrayVente.sort((a, b) => {
       </Chart>
 
     </Container>
+
   );
 }
 

@@ -1,8 +1,19 @@
 import { Typography, Container } from "@mui/material";
 import theme from "../Theme/Light.jsx";
 import BlocCommande from "../Components/BlocCommande";
+import * as React from "react";
+import API from "../API/API";
 
 function Historique(props) {
+  const classAPI = new API();
+  const [commande, setCommande] = React.useState([]);
+  const [loaded, setLoaded] = React.useState(false);
+  React.useEffect(() => {
+    classAPI.getCommande("62b1a668fe9e11112dc92faa").then(function (response) {
+      setCommande(response);
+      setLoaded(true);
+    });
+  }, []);
   const commandelist = [
     {
       nom: "Burger King",
@@ -76,6 +87,8 @@ function Historique(props) {
       ],
     },
   ];
+  
+
   return (
     <Container>
       <Typography variant="h6" component="p">Historique des commandes</Typography>

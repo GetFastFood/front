@@ -13,6 +13,9 @@ import FactCheckIcon from "@mui/icons-material/FactCheck";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListAltIcon from "@mui/icons-material/ListAlt";
+import EqualizerIcon from '@mui/icons-material/Equalizer';
+import BarChartIcon from '@mui/icons-material/BarChart';
+import SourceIcon from '@mui/icons-material/Source';
 import logo from "../Images/logo.png";
 import API from "../API/API";
 
@@ -90,7 +93,6 @@ function Header(props) {
           ) : (
             ""
           )}
-
           {localStorage.getItem("role") === "role_livreur" ? (
             <Link
               href="/livreur/commandes"
@@ -108,6 +110,7 @@ function Header(props) {
             ""
           )}
 
+
           {localStorage.getItem("role") === "role_restaurateur" ? (
             <Link
               href="/restaurateur/monrestaurant"
@@ -119,6 +122,70 @@ function Header(props) {
                   <StorefrontIcon />
                 </ListItemButton>
                 <ListItemText>Mon Restaurant</ListItemText>
+              </ListItem>
+            </Link>
+          ) : (
+            ""
+          )}
+          {localStorage.getItem("role") === "role_restaurateur" ? (
+            <Link
+              href="/restaurateur/statsventes"
+              sx={{ textDecoration: "none", color: " inherit" }}
+              className={classes.hover}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <BarChartIcon />
+                </ListItemButton>
+                <ListItemText>Statistiques des ventes</ListItemText>
+              </ListItem>
+            </Link>
+          ) : (
+            ""
+          )}
+          {localStorage.getItem("role") === "role_technique" ? (
+            <Link
+              href="/technique/logs"
+              sx={{ textDecoration: "none", color: " inherit" }}
+              className={classes.hover}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <EqualizerIcon />
+                </ListItemButton>
+                <ListItemText>Statistiques et Logs</ListItemText>
+              </ListItem>
+            </Link>
+          ) : (
+            ""
+          )}
+           {localStorage.getItem("role") === "role_commercial" ? (
+            <Link
+              href="/commercial/statsapp"
+              sx={{ textDecoration: "none", color: " inherit" }}
+              className={classes.hover}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <EqualizerIcon />
+                </ListItemButton>
+                <ListItemText>Statistiques de l'application</ListItemText>
+              </ListItem>
+            </Link>
+          ) : (
+            ""
+          )}
+          {localStorage.getItem("role") === "role_dev" ? (
+            <Link
+              href="/developpeurtiers/gestioncomposant/"
+              sx={{ textDecoration: "none", color: " inherit" }}
+              className={classes.hover}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <SourceIcon />
+                </ListItemButton>
+                <ListItemText>Gestion des composants</ListItemText>
               </ListItem>
             </Link>
           ) : (

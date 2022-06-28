@@ -46,7 +46,6 @@ export default class API {
   }
 
   getCommandes() {
-
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -73,7 +72,61 @@ export default class API {
   }
 
   getCommande(idResto) {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem("access_token")
+    );
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+      mode: "cors",
+    };
+
+    return fetch(this.url + "/order/restaurant/" + idResto, requestOptions)
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (text) {
+        return text;
+      })
+      .catch(function (error) {
+        console.log("Request failed", error);
+      });
+  }
+
+  getCommandeClient(idResto) {
     return fetch(this.url + "/order/restaurant/" + idResto, { mode: "cors" })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (text) {
+        return text;
+      })
+      .catch(function (error) {
+        console.log("Request failed", error);
+      });
+  }
+
+  getCommandeRestaurant(id) {
+
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem("access_token")
+    );
+
+    
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+      mode: "cors",
+    };
+
+
+    return fetch(this.url + "/order/restaurant/" + id, requestOptions)
       .then(function (response) {
         return response.json();
       })
@@ -134,6 +187,20 @@ export default class API {
         console.log("Request failed", error);
       });
   }
+
+  getArticle(id) {
+    return fetch(this.url + "/article/" + id, { mode: "cors" })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (text) {
+        return text;
+      })
+      .catch(function (error) {
+        console.log("Request failed", error);
+      });
+  }
+
 
   checkPassword(email, password) {
     var urlencoded = new URLSearchParams();
@@ -326,52 +393,55 @@ export default class API {
   }
 
   updateRestaurant(values) {
-      var urlencoded = new URLSearchParams();
-      urlencoded.append("name", values.name);
-      urlencoded.append("address", values.address);
-      urlencoded.append("opening", values.opening);
-      urlencoded.append("closing", values.closing);
-      urlencoded.append("status", values.status);
-      urlencoded.append("image", values.image);
-
-      var myHeaders = new Headers();
-      myHeaders.append(
-        "Authorization",
-        "Bearer " + localStorage.getItem("access_token")
-      );
-
-     var requestOptions = {
-       method: "PUT",
-       body: urlencoded,
-       headers : myHeaders,
-       redirect: "follow",
-       mode: "cors",
-     };
-
-      return fetch(this.url + "/restaurant/"+values._id, requestOptions)
-        .then((response) => response.text())
-        .then((result) => console.log(result))
-        .catch((error) => console.log("error", error));
-  }
-
-  updateMenu(values,menuContent) {
     var urlencoded = new URLSearchParams();
     urlencoded.append("name", values.name);
-    urlencoded.append("description", values.description);
-    urlencoded.append("price", values.price);
-    urlencoded.append("content", menuContent);
-    urlencoded.append("restaurantId", values.restaurantId);
+    urlencoded.append("address", values.address);
+    urlencoded.append("opening", values.opening);
+    urlencoded.append("closing", values.closing);
+    urlencoded.append("status", values.status);
+    urlencoded.append("image", values.image);
 
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
       "Bearer " + localStorage.getItem("access_token")
     );
-   // myHeaders.append("contentType", "application/json; charset=utf-8")
 
     var requestOptions = {
       method: "PUT",
       body: urlencoded,
+      headers: myHeaders,
+      redirect: "follow",
+      mode: "cors",
+    };
+
+    return fetch(this.url + "/restaurant/" + values._id, requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  }
+
+  updateMenu(values, menuContent) {
+
+    var raw = JSON.stringify({
+      content: menuContent,
+      description: values.description,
+      name: values.name,
+      price: values.price,
+      restaurantId: values.restaurantId,
+    });
+
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem("access_token")
+    );
+    myHeaders.append("Content-Type", "application/json");
+
+
+    var requestOptions = {
+      method: "PUT",
+      body: raw,
       headers: myHeaders,
       redirect: "follow",
       mode: "cors",
@@ -382,4 +452,104 @@ export default class API {
       .then((result) => console.log(result))
       .catch((error) => console.log("error", error));
   }
+
+  createMenu(values, menuContent) {
+    var raw = JSON.stringify({
+      content: menuContent,
+      description: values.description,
+      name: values.name,
+      price: values.price,
+      restaurantId: values.restaurantId,
+    });
+
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem("access_token")
+    );
+    myHeaders.append("Content-Type", "application/json");
+
+
+    var requestOptions = {
+      method: "POST",
+      body: raw,
+      headers: myHeaders,
+      redirect: "follow",
+      mode: "cors",
+    };
+
+    return fetch(this.url + "/menu/", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  }
+
+  deleteMenu(id) {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem("access_token")
+    );
+
+    var requestOptions = {
+      method: "DELETE",
+      headers: myHeaders,
+      redirect: "follow",
+      mode: "cors",
+    };
+
+    return fetch(this.url + "/menu/" + id, requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  }
+
+  createOrder(panier, idUser, idRestaurant,total) {
+    var panierTotal = []
+
+    panier.map((article) => {
+      console.log(article.type == "menu")
+      if(article.type == "menu"){
+        article.description.map((menuArticle) => {
+          console.log(menuArticle)
+          panierTotal = [...panierTotal, menuArticle]
+        })
+      }else{
+        panierTotal = [...panierTotal, article._id]
+      }
+    })
+
+
+    var raw = JSON.stringify({
+      user: idUser,
+      delivery : null,
+      restaurant: idRestaurant,
+      price: total,
+      article : panierTotal,
+    });
+
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem("access_token")
+    );
+    myHeaders.append("Content-Type", "application/json");
+
+
+    var requestOptions = {
+      method: "POST",
+      body: raw,
+      headers: myHeaders,
+      redirect: "follow",
+      mode: "cors",
+    };
+
+    return fetch(this.url + "/order", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  }
+
+
+
 }

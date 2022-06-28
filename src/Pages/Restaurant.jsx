@@ -202,7 +202,7 @@ function Restaurant(props) {
           );
         })}
       </Container>
-      <Panier panier={panierList} removeFunc={removeFunc} deleteAll={deleteAllFunc} />
+      <Panier panier={panierList} removeFunc={removeFunc} deleteAll={deleteAllFunc} restoID={restoID} />
     </>
   );
 }

@@ -56,7 +56,9 @@ function Menu(props) {
 
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [menuContent, setMenuContent] = useState(props.content);
+  const [menuContent, setMenuContent] = useState(
+    props.new ? [] : props.content
+  );
   const [values, setValues] = useState({
     _id: props._id,
     content: props.content,
@@ -67,9 +69,6 @@ function Menu(props) {
   });
   const classAPI = new API();
 
-
-  
-
   const handleOpen = () => {
     setOpen(true);
   };
@@ -78,27 +77,38 @@ function Menu(props) {
     setOpen(false);
   };
 
+  const handleDelete = () => {
+    classAPI.deleteMenu(values._id)
+    .then(() => {
+      window.location.replace("/restaurateur/monrestaurant");
+    })
+  }
+
   const handleSubmit = () => {
     setOpen(false);
-    console.log(values, menuContent)
-    classAPI.updateMenu(values, menuContent)
-    .then(() => {
-      console.log("ok")
-    })
+    console.log(values, menuContent);
+    if (props.new) {
+      classAPI.createMenu(values, menuContent).then(() => {
+        window.location.replace("/restaurateur/monrestaurant");
+      });
+    } else {
+      classAPI.updateMenu(values, menuContent).then(() => {
+        window.location.replace("/restaurateur/monrestaurant");
+      });
+    }
   };
 
   const update = (type, e) => {
-    var temp = menuContent.filter((obj) => obj !== type)
-    for ( var i = 0; i< e.target.value; i++){
-      temp = [...temp, type].sort()
+    var temp = menuContent.filter((obj) => obj !== type);
+    for (var i = 0; i < e.target.value; i++) {
+      temp = [...temp, type].sort();
     }
-    setMenuContent(temp)
-  }
-  
+    setMenuContent(temp);
+  };
+
   useEffect(() => {
-    console.log(menuContent)
-  }, [menuContent])
-  
+    console.log(menuContent);
+  }, [menuContent]);
 
   return (
     <>
@@ -111,30 +121,37 @@ function Menu(props) {
         }}
         className={classes.back}
       >
-        <Grid item md={10} xs={7}>
-          <p className={classes.name}>{props.name}</p>
-          <p className={classes.desc}>{props.description}</p>
-        </Grid>
+        {props.new ? (
+          <Typography variant="h6">Nouveau Menu</Typography>
+        ) : (
+          <>
+            <Grid item md={10} xs={7}>
+              <p className={classes.name}>{props.name}</p>
+              <p className={classes.desc}>{props.description}</p>
+            </Grid>
 
-        <Grid item md={2} xs={5}>
-          <p className={classes.price}>
-            {new Intl.NumberFormat("de-DE", {
-              style: "currency",
-              currency: "EUR",
-            }).format(props.price)}
-          </p>
-        </Grid>
-        <Fab
-          size="small"
-          sx={{
-            backgroundColor: "error.light",
-            color: "white",
-            ml: theme.spacing(1),
-          }}
-          onClick={handleOpen}
-        >
-          <RemoveIcon />
-        </Fab>
+            <Grid item md={2} xs={5}>
+              <p className={classes.price}>
+                {new Intl.NumberFormat("de-DE", {
+                  style: "currency",
+                  currency: "EUR",
+                }).format(props.price)}
+              </p>
+            </Grid>
+
+            <Fab
+              size="small"
+              sx={{
+                backgroundColor: "error.light",
+                color: "white",
+                ml: theme.spacing(1),
+              }}
+              onClick={handleDelete}
+            >
+              <RemoveIcon />
+            </Fab>
+          </>
+        )}
 
         <Fab
           size="small"
@@ -145,10 +162,8 @@ function Menu(props) {
           }}
           onClick={handleOpen}
         >
-          <EditIcon />
+          {props.new ? <AddIcon /> : <EditIcon />}
         </Fab>
-
-        
       </Grid>
 
       <Dialog onClose={handleClose} open={open} sx={{ pb: theme.spacing(4) }}>
@@ -212,7 +227,7 @@ function Menu(props) {
                     }}
                     sx={{ py: theme.spacing(1) }}
                     onChange={(e) => {
-                       update(type,e)
+                      update(type, e);
                     }}
                   />
                 </Grid>

@@ -24,7 +24,6 @@ function MonResto(props) {
   const [resto, setResto] = React.useState({});
   const [loaded, setLoaded] = React.useState(false);
   const [types, setTypes] = React.useState([]);
-  const restoID = "62b1a668fe9e11112dc92faa";
   const classAPI = new API();
   var temp = [];
 
@@ -55,10 +54,12 @@ function MonResto(props) {
     console.log(resto);
   }, [resto]);
 
+  
+
   return !loaded ? (
     <Loading />
   ) : (
-    <>
+    <> 
       <Container sx={{ py: theme.spacing(2) }} maxWidth="md">
         <Typography
           variant="h4"
@@ -221,10 +222,10 @@ function MonResto(props) {
           }}
         >
           {resto.article.map((article) => {
-            return <ProduitEdit {...article} restoID={restoID} />;
+            return <ProduitEdit {...article} restoID={resto.restaurant._id} />;
           })}
 
-          <ProduitEdit new={true} restoID={restoID} />
+          <ProduitEdit new={true} restoID={resto.restaurant._id} />
         </Container>
 
         <Typography
@@ -247,7 +248,7 @@ function MonResto(props) {
             return <MenuEdit {...menu} types={types} />;
           })}
 
-          {/* <MenuEdit new={true} restoID={restoID} /> */}
+          <MenuEdit new={true} types={types} restaurantId={resto.restaurant._id}/>
         </Container>
       </Container>
     </>

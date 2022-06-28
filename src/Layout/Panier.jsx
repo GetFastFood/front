@@ -19,6 +19,7 @@ import { makeStyles } from "@mui/styles";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ErrorIcon from "@mui/icons-material/Error";
 import Paypal from "../Components/PayPal";
+import API from "../API/API";
 
 function Panier(props) {
   const [total, setTotal] = React.useState(0);
@@ -29,6 +30,7 @@ function Panier(props) {
   const [codePromoValid, setCodePromoValid] = React.useState("");
   const [codePromoUsed, setCodePromoUsed] = React.useState(false);
   const [paypalReturn, setPaypalReturn] = React.useState();
+  const classAPI = new API();
 
   const handleOpen = () => {
     setOpen(true);
@@ -53,8 +55,11 @@ function Panier(props) {
     console.log(order, state);
     setPaypalReturn(state);
     setOpenValid(true);
+    if(state){
+      classAPI.createOrder(props.panier, localStorage.getItem('id'), props.restoID, total)
+    }
     await sleep(2000);
-    window.location.replace("/");
+    //window.location.replace("/");
   };
 
   const codePromoCheck = (e) => {
@@ -75,6 +80,7 @@ function Panier(props) {
     setTotal(t);
 
     props.panier.length > 0 ? setDisabled(false) : setDisabled(true);
+    console.log(props.panier)
   }, [props.panier]);
 
   React.useEffect(() => {
@@ -99,7 +105,6 @@ function Panier(props) {
   const classes = useStyles();
   return (
     <>
-      <script src="https://www.paypal.com/sdk/js?client-id=AZeKTBf7YhyGlbS3L_cfHl3Rm5BfWHTKwZj5M8tLHPYW9eYSizpXfGhUuA_d6J-PYF4UbgPDijqq1PUK&disable-funding=credit,card&currency=EUR"></script>
       <Box
         className="Tracker"
         sx={{ position: "fixed", bottom: 0, width: "100%", zIndex: "tooltip" }}
@@ -143,7 +148,7 @@ function Panier(props) {
                 <Typography variant="h6">{article.name}</Typography>
                 <Typography className={classes.description}>
                   {Array.isArray(article.description)
-                    ? article.description.join(" ")
+                    ? article.descriptName.join(" • ")
                     : ""}
                 </Typography>
                 <Typography className={classes.price}>

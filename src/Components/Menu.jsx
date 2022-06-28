@@ -64,6 +64,7 @@ function Menu(props) {
   const [open, setOpen] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [menuContent, setMenuContent] = useState([]);
+  const [descriptName, setDescriptName] = useState([]);
 
   const handleOpen = () => {
     setOpen(true);
@@ -81,13 +82,18 @@ function Menu(props) {
       price: props.price,
       type: "menu",
       description: menuContent,
+      descriptName : descriptName,
     });
   };
 
-  const addToContent = (e, id) => {
+  const addToContent = (article, id) => {
     let newArr = [...menuContent];
-    newArr[id] = e.target.value;
+    newArr[id] = article._id;
     setMenuContent(newArr);
+
+    let newArr2 = [...descriptName];
+    newArr2[id] = article.name;
+    setDescriptName(newArr2);
   };
 
   useEffect(() => {
@@ -151,12 +157,12 @@ function Menu(props) {
                       if (article.type == typeArticle) {
                         return (
                           <FormControlLabel
-                            value={article.name}
+                            value={article._id}
                             control={<Radio />}
                             label={article.name}
                             required
-                            onChange={(e) => {
-                              addToContent(e, index);
+                            onChange={() => {
+                              addToContent({name : article.name, _id : article._id}, index);
                             }}
                           />
                         );

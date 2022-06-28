@@ -3,6 +3,7 @@ import Typography from "@mui/material/Typography";
 import * as React from "react";
 import API from "../../API/API";
 import Loading from "../../Components/Loading";
+import theme from "../../Theme/Light.jsx";
 import { Chart, Series, ConstantLine, Label } from "devextreme-react/chart";
 
 function StatistiquesApplication(props) {
@@ -43,7 +44,7 @@ function StatistiquesApplication(props) {
       countUser[element.role] = 1;
     }
   }
-  
+
   if (loaded) {
     for (const element of commandes) {
       ventesJour.push({
@@ -57,17 +58,17 @@ function StatistiquesApplication(props) {
         ? (objVente[vente.date] = vente.nbArticle)
         : (objVente[vente.date] = objVente[vente.date] + vente.nbArticle);
     });
-  
+
     Object.keys(objVente).map((key) => {
       arrayVente = [...arrayVente, { date: key, nbArticle: objVente[key] }];
     });
-  
+
     arrayVente.sort((a, b) => {
       let da = new Date(a.date),
         db = new Date(b.date);
       return da - db;
     });
-   
+
     function formatDate(date) {
       var d = new Date(date),
         month = "" + (d.getMonth() + 1),
@@ -79,40 +80,85 @@ function StatistiquesApplication(props) {
 
       return [year, month, day].join("-");
     }
-    console.log(arrayVente)
+    console.log(arrayVente);
   }
 
   return !loaded ? (
     <Loading />
   ) : (
     <Container>
-      <Typography>
-        Il y {user.length} utilisateur(s) sur l'application{" "}
+      <Typography
+        variant="h4"
+        component="p"
+        sx={{
+          color: "primary.dark",
+          py: theme.spacing(10),
+          textAlign: "center",
+        }}
+      >
+        Statistiques de l'application
       </Typography>
-      {Object.keys(countUser).map((key) => {
-        return (
-          <Typography>
-            {countUser[key]} utilisateur(s) avec le {key}
-          </Typography>
-        );
-      })}
-      <Chart id="chart" dataSource={arrayVente}>
-        <Series
-          valueField="nbArticle"
-          argumentField="date"
-          name="Evolution des Ventes"
-          type="bar"
-          color="#FF961F"
-        />
-        <ConstantLine
-            width={2}
-            value={countUser}
-            color="#8c8cff"
-            dashStyle="dash"
-          >
-            <Label text="Low Average" />
-          </ConstantLine>
-      </Chart>
+      <Box sx={{ backgroundColor: "primary.light", borderRadius: "10px", textAlign: "center" }}>
+        <Typography
+          variant="h5"
+          component="p"
+          sx={{
+            color: "primary.dark",
+            py: theme.spacing(2),
+          }}
+        >
+          Il y {user.length > 1? user.length + " utilisateurs " : user.length + " utilisateur "}  sur l'application{" "}
+        </Typography>
+        {Object.keys(countUser).map((key) => {
+          return (
+            <>
+              {console.log(key)}
+              <Typography
+                variant="h6"
+                component="p"
+                sx={{
+                  color: "white",
+                  py: theme.spacing(1),
+                }}
+              >
+                {countUser[key] >1 ? countUser[key] + " utilisateurs " : countUser[key] + " utilisateur "}avec le role{" "}
+                {key === "role_client"
+                  ? "Client"
+                  : key === "role_restaurateur"
+                  ? "Restaurateur"
+                  : key === "role_livreur"
+                  ? "Livreur"
+                  : key === "role_dev"
+                  ? "Developpeur"
+                  : key === "role_commercial"
+                  ? "Commercial"
+                  : "Technique"}
+              </Typography>
+            </>
+          );
+        })}
+      </Box>
+      <Box sx={{ py: theme.spacing(5) }}>
+        <Typography
+          variant="h5"
+          component="p"
+          sx={{
+            color: "primary.dark",
+            py: theme.spacing(2),
+          }}
+        >
+          Evolution des ventes de tous les restaurants en fonction du temps :
+        </Typography>
+        <Chart id="chart" dataSource={arrayVente}>
+          <Series
+            valueField="nbArticle"
+            argumentField="date"
+            name="Evolution des Ventes"
+            type="bar"
+            color="#FF961F"
+          />
+        </Chart>
+      </Box>
     </Container>
   );
 }

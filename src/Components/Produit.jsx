@@ -19,6 +19,7 @@ function Produit(props) {
         price: props.price,
         type: props.type,
         description: props.description,
+        _id : props._id
       });
     }
   };
@@ -30,6 +31,7 @@ function Produit(props) {
       price: props.price,
       type: props.type,
       description: props.description,
+      _id : props._id
     });
   };
 
