@@ -24,3 +24,9 @@ jobs:
         cache: 'npm'
     - run: npm i --force
     - run: npm run build
+    - run: |
+        cd front
+        pm2 stop 1
+        pm2 serve build 3000 --spa
+
+      
