@@ -9,7 +9,7 @@ on:
 
 defaults:
   run:
-    working-directory: ./home/getfast-build
+    working-directory: web
     
 jobs:
   build:
