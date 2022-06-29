@@ -7,11 +7,15 @@ on:
   push:
     branches: [ "main" ]
 
+defaults:
+  run:
+    working-directory: ./home/getfast-build
+    
 jobs:
   build:
 
     runs-on: ubuntu-latest
-
+    
     strategy:
       matrix:
         node-version: [16.x]
