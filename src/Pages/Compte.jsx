@@ -41,8 +41,8 @@ function Compte(props) {
       .then((result) => {
         if (JSON.parse(result)["refresh_token"]) {
           if (typeRequest == "edit") {
-            classAPI.updateUser(localStorage.getItem("id"), values);
-            //  window.location.replace("/compte")
+            classAPI.updateUser(localStorage.getItem("id"), values)
+              .then(() => window.location.replace("/compte"))
           }
           if (typeRequest == "delete") {
             classAPI.deleteUser(localStorage.getItem("id"), true).then(() => {

@@ -84,7 +84,7 @@ function Connexion() {
         />
       </FormControl>
       <Link
-        href="/motdepasse"
+        href="/motdepasse/oublie"
         sx={{
           textDecorationColor: theme.palette.secondary.main,
         }}

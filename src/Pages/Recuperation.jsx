@@ -104,7 +104,6 @@ function Recuperation(props) {
         }}
         variant="contained"
         disabled={disabled}
-        onClick={() => console.log(values)}
       >
         Valider
       </Button>

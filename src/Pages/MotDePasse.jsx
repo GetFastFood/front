@@ -2,17 +2,20 @@ import theme from "../Theme/Light.jsx";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Link, Button, Divider, Container, FormControl } from "@mui/material";
+import API from "../API/API";
 import axios from "axios";
 import React, { useState } from "react";
 
 function MotDePasse() {
+  const [email, setEmail] = useState("");
   const emailRegex = /\S+@\S+\.\S+/;
+  const classAPI = new API();
 
   const [isValidEmail, setIsValidEmail] = useState(false);
   const [messageEmail, setMessageEmail] = useState("");
 
   const validateEmail = (event) => {
-    const email = event.target.value;
+    const email = event.target.value; 
     if (emailRegex.test(email)) {
       setIsValidEmail(true);
       setMessageEmail("");
@@ -22,24 +25,13 @@ function MotDePasse() {
     }
   };
 
-   const handleSubmit = e =>{
-    e.preventDefault();
-
-    const data = {
-      email: this.email
-    };
-
-    axios.post('forgot', data).then(
-      res => {
-        console.log(res)
-      }
-    ).catch(
-      err => {
-        console.log(err);
-      }
-    )
+  const submit = () => {
+      classAPI.SendMail().then(() => {
+        //window.location.replace("/motdepasse/success");
+      });
   };
 
+  //console.log(email)
   return (
     <Container
       maxWidth="sm"
@@ -68,7 +60,7 @@ function MotDePasse() {
       >
         Vous avez oublié votre mot de passe? Pas de panique nous vous envoyons un mail!
       </Typography>
-      <FormControl onSubmit={handleSubmit}>
+      <FormControl>
       <TextField
         fullWidth
         id="outlined-basic"
@@ -76,11 +68,13 @@ function MotDePasse() {
         required
         onBlur={validateEmail}
         variant="filled"
+        onChange={(e) => {
+          setEmail(e.target.value);
+        }}
       />
       </FormControl>
       <Typography sx={{ color: "red" }}>{messageEmail}</Typography>
       <Button
-      href="./success"
         sx={{
           borderRadius: 2,
           backgroundColor: "secondary.main",
@@ -89,9 +83,9 @@ function MotDePasse() {
           textTransform: "capitalize",
         }}
         variant="contained"
-        onChange={e => this.email = e.target.value}
+        onClick={submit}
       >
-        Connexion
+        Envoyer
       </Button>
       <Divider
         sx={{

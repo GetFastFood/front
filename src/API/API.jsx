@@ -71,7 +71,7 @@ export default class API {
       });
   }
 
-  getCommande(idResto) {
+  getCommande(id) {
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
@@ -84,7 +84,7 @@ export default class API {
       mode: "cors",
     };
 
-    return fetch(this.url + "/order/restaurant/" + idResto, requestOptions)
+    return fetch(this.url + "/order/" + id, requestOptions)
       .then(function (response) {
         return response.json();
       })
@@ -96,8 +96,20 @@ export default class API {
       });
   }
 
-  getCommandeClient(idResto) {
-    return fetch(this.url + "/order/restaurant/" + idResto, { mode: "cors" })
+  getCommandeClient(idClient) {
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem("access_token")
+    );
+    var requestOptions = {
+      method: "GET",
+      headers: myHeaders,
+      redirect: "follow",
+      mode: "cors",
+    };
+
+    return fetch(this.url + "/order/client/" + idClient, requestOptions)
       .then(function (response) {
         return response.json();
       })
@@ -512,10 +524,10 @@ export default class API {
       if(article.type == "menu"){
         article.description.map((menuArticle) => {
           console.log(menuArticle)
-          panierTotal = [...panierTotal, menuArticle]
+          panierTotal = [...panierTotal, {_id :menuArticle}]
         })
       }else{
-        panierTotal = [...panierTotal, article._id]
+        panierTotal = [...panierTotal, {_id : article._id}]
       }
     })
 
@@ -550,6 +562,49 @@ export default class API {
       .catch((error) => console.log("error", error));
   }
 
+  updateOrder(id, status, idLivreur) {
 
+    var modif = {}
+    if(status !== undefined){
+      modif = {...modif, status : status}
+    }
+    if(idLivreur !== undefined){
+      modif = {...modif, delivery : idLivreur}
+    }
+
+    var raw = JSON.stringify(modif);
+
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem("access_token")
+    );
+    myHeaders.append("Content-Type", "application/json");
+
+
+    var requestOptions = {
+      method: "PUT",
+      body: raw,
+      headers: myHeaders,
+      redirect: "follow",
+      mode: "cors",
+    };
+
+    return fetch(this.url + "/order/" + id, requestOptions)
+      .then((response) => response.text())
+      .catch((error) => console.log("error", error));
+  }
+
+  SendMail() {
+    var requestOptions = {
+      method: "POST",
+      body: JSON.stringify({to: "mattie.langlois@viacesi.fr"}),
+      redirect: "follow",
+    };
+    console.log(requestOptions.body)
+    return fetch(this.url + "/service/recuperation", requestOptions).then((response) =>
+      response.text()
+    );
+  }
 
 }
