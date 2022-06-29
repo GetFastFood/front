@@ -10,29 +10,45 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { useParams } from "react-router-dom";
+import Loading from "../../Components/Loading.jsx";
+import API from "../../API/API.jsx";
 
 function LivraisonClient(props) {
-  const adresseClient = "2 parvis de la bievre";
 
+  const classAPI = new API();
+  const params = useParams();
+  const idOrder = params.idCommande;
   const [center, setCenter] = useState();
+  const [client, setClient] = useState();
+  const [loaded, setLoaded] = useState(false);
+
+  console.log(idOrder);
+  console.log("res");
 
   useEffect(() => {
-    const apiUrl =
-      "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-      adresseClient +
-      "&key=AIzaSyBPmfKvHBL7DvkJW-svBtIFfqWL4TaThFY";
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) =>
-        setCenter({
-          lat: data.results[0].geometry.location.lat,
-          lng: data.results[0].geometry.location.lng,
-        })
-      );
+    classAPI.getCommande(idOrder).then((res) => {
+      classAPI.getUser(res.user).then((response) => {
+        setClient(response);
+        setLoaded(true)
+        const apiUrl =
+          "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+          response[0].address +
+          "&key=AIzaSyBPmfKvHBL7DvkJW-svBtIFfqWL4TaThFY";
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) =>
+            setCenter({
+              lat: data.results[0].geometry.location.lat,
+              lng: data.results[0].geometry.location.lng,
+            })
+          );
+      });
+    });
   }, []);
 
   const containerStyle = {
-    width: "300px",
+    width: "500px",
     height: "300px",
   };
   const [open, setOpen] = React.useState(false);
@@ -45,7 +61,7 @@ function LivraisonClient(props) {
     setOpen(false);
   };
 
-  return (
+  return !loaded? (<Loading/>) : ( 
     <Container
       sx={{
         display: "flex",
@@ -89,7 +105,7 @@ function LivraisonClient(props) {
           Adresse du Client
         </Typography>
         <Typography
-          variant="h5"
+          variant="h6"
           component="p"
           sx={{
             textAlign: "center",
@@ -97,7 +113,7 @@ function LivraisonClient(props) {
             mb: theme.spacing(4),
           }}
         >
-          {adresseClient}
+          {client[0].address}
         </Typography>
         <div>
           <LoadScript googleMapsApiKey="AIzaSyBsShKf0R4QgMbFw-KIQd2iXqDeGVobuUg">
@@ -111,26 +127,26 @@ function LivraisonClient(props) {
           </LoadScript>
         </div>
       </Box>
-        <Button variant="outlined" onClick={handleClickOpen}
-         sx={{
+      <Button
+        variant="outlined"
+        onClick={handleClickOpen}
+        sx={{
           borderRadius: 2,
           backgroundColor: "secondary.main",
           color: "#fff",
           size: "large",
           textTransform: "capitalize",
           mt: theme.spacing(4),
-        }}>
-          Generer le QRcode
-        </Button>
-        <Dialog open={open} onClose={handleClose}>
-          <DialogContent>
-            <QRCode
-              value={window.location.hostname+"/"}
-              size={200}
-            />
-          </DialogContent>
-          <DialogActions></DialogActions>
-        </Dialog>
+        }}
+      >
+        Generer le QRcode
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogContent>
+          <QRCode value={window.location.hostname + "/deliveredPage/"+idOrder} size={200} />
+        </DialogContent>
+        <DialogActions></DialogActions>
+      </Dialog>
     </Container>
   );
 }

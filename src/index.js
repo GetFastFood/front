@@ -24,6 +24,9 @@ import StatistiquesApplication from "./Pages/ServiceCommercial/StatistiquesAppli
 import GestionComposant from "./Pages/DeveloppeurTiers/GestionComposant";
 import MonResto from "./Pages/Restaurateur/MonResto";
 import Parrainage from "./Pages/Parrainage";
+import CGV from "./Pages/CGV";
+import MentionLegales from "./Pages/MentionLegales";
+import Confidentialité from "./Pages/Confidentialite";
 import Maps from "./Pages/Livreur/Maps";
 import Header from "./Layout/Header";
 import reportWebVitals from "./reportWebVitals";
@@ -36,6 +39,7 @@ import DMZ from "./Pages/DMZ";
 import "./Fonts/gt-america-extended-medium.latin-webfont.woff";
 import PrivateRoute from "./API/PrivateRoute";
 import CommandesList from "./Pages/Restaurateur/CommandesList";
+import DeliveredPage from "./Pages/Scripting/DeliveredPage";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -48,10 +52,6 @@ root.render(
           <Route path="/" element={<Home />} />
           <Route path="/connexion" element={<Connexion />} />
           <Route path="/inscription" element={<Inscription />} />
-
-          <Route path="/motdepasse/oublie" element={<MotDePasse />} />
-          <Route path="/motdepasse/recuperation" element={<Recuperation />} />
-          <Route path="/motdepasse/success" element={<SuccessPassword />} />
 
           <Route exact path="/compte" element={<PrivateRoute />}>
             <Route path="/compte" element={<Compte />} />
@@ -95,6 +95,19 @@ root.render(
               element={<LivraisonClient />}
             />
           </Route>
+
+          <Route path="/motdepasse/oublie" element={<MotDePasse />} />
+
+          <Route path="/motdepasse/success" element={<SuccessPassword />} />
+          <Route
+              path="/motdepasse/recuperation/:idUser"
+              element={<Recuperation />}
+            />
+          <Route path="/conditionsgenerales" element={<CGV />} />
+
+          <Route path="/mentionlegales" element={<MentionLegales />} />
+
+          <Route path="/confidentialite" element={<Confidentialité />} />
 
           <Route
             exact
@@ -154,6 +167,9 @@ root.render(
           >
             <Route path="/commercial/statsapp" element={<StatistiquesApplication />} />
           </Route>
+
+
+          <Route path="/deliveredPage/:idOrder" element={<DeliveredPage/>}/>
 
           <Route path="/dmz" element={<DMZ />} />
           <Route path="*" element={<NotFound />} />

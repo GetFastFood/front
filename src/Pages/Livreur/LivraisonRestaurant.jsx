@@ -4,33 +4,57 @@ import theme from "../../Theme/Light.jsx";
 import React, { Component, useEffect, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { Container, Button, Box, Link } from "@mui/material";
+import { useParams } from "react-router-dom";
+import API from "../../API/API.jsx";
+import Loading from "../../Components/Loading.jsx";
 
 function LivraisonRestaurant(props) {
-  const adresseRestaurant = "73 rue des Cevennes";
-
   const [center, setCenter] = useState();
 
+  const classAPI = new API();
+  const params = useParams();
+  const idOrder = params.idCommande;
+  const [resto, setResto] = useState();
+  const [loaded, setLoaded] = useState(false);
+
+  console.log(idOrder);
+
   useEffect(() => {
-    const apiUrl =
-      "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-      adresseRestaurant +
-      "&key=AIzaSyBPmfKvHBL7DvkJW-svBtIFfqWL4TaThFY";
-    fetch(apiUrl)
-      .then((response) => response.json())
-      .then((data) =>
-        setCenter({
-          lat: data.results[0].geometry.location.lat,
-          lng: data.results[0].geometry.location.lng,
-        })
-      );
+    classAPI.getCommande(idOrder).then((res) => {
+      classAPI.getRestaurant(res.restaurant).then((response) => {
+        setResto(response);
+        setLoaded(true)
+        const apiUrl =
+          "https://maps.googleapis.com/maps/api/geocode/json?address=" +
+          response.restaurant.address +
+          "&key=AIzaSyBPmfKvHBL7DvkJW-svBtIFfqWL4TaThFY";
+        fetch(apiUrl)
+          .then((response) => response.json())
+          .then((data) => {
+            setCenter({
+              lat: data.results[0].geometry.location.lat,
+              lng: data.results[0].geometry.location.lng,
+            });
+            setLoaded(true);
+          });
+      });
+    });
   }, []);
 
   const containerStyle = {
-    width: "300px",
+    width: "500px",
     height: "300px",
   };
 
-  return (
+  const handleRecup = () => {
+    classAPI.updateOrder(idOrder, "delivering").then(() => {
+      window.location.replace("/livreur/livraisonclient/" + idOrder);
+    });
+  };
+
+  return !loaded ? (
+    <Loading />
+  ) : (
     <Container
       sx={{
         display: "flex",
@@ -73,7 +97,7 @@ function LivraisonRestaurant(props) {
           Adresse du Restaurant
         </Typography>
         <Typography
-          variant="h5"
+          variant="h6"
           component="p"
           sx={{
             textAlign: "center",
@@ -81,7 +105,7 @@ function LivraisonRestaurant(props) {
             mb: theme.spacing(4),
           }}
         >
-          {adresseRestaurant}
+          {resto.restaurant.address}
         </Typography>
         <div>
           <LoadScript googleMapsApiKey="AIzaSyBsShKf0R4QgMbFw-KIQd2iXqDeGVobuUg">
@@ -95,20 +119,19 @@ function LivraisonRestaurant(props) {
           </LoadScript>
         </div>
       </Box>
-      <Link href="/livreur/livraisonclient">
-        <Button
-          sx={{
-            borderRadius: 2,
-            backgroundColor: "secondary.main",
-            size: "large",
-            textTransform: "capitalize",
-            mt: theme.spacing(4),
-          }}
-          variant="contained"
-        >
-          Commande récupérée
-        </Button>
-      </Link>
+      <Button
+        sx={{
+          borderRadius: 2,
+          backgroundColor: "secondary.main",
+          size: "large",
+          textTransform: "capitalize",
+          mt: theme.spacing(4),
+        }}
+        variant="contained"
+        onClick={handleRecup}
+      >
+        Commande récupérée
+      </Button>
     </Container>
   );
 }

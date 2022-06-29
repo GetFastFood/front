@@ -59,7 +59,7 @@ function Panier(props) {
       classAPI.createOrder(props.panier, localStorage.getItem('id'), props.restoID, total)
     }
     await sleep(2000);
-    //window.location.replace("/");
+    window.location.replace("/");
   };
 
   const codePromoCheck = (e) => {

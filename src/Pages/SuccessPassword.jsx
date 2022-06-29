@@ -20,7 +20,7 @@ function SuccessPassword(props) {
           textAlign: "center",
         }}>Cliquez sur le bouton pour vous reconnecter.</Typography>
       <Button
-        href="connexion"
+        href="/motdepasse/recuperation/:idUser"
         sx={{
           borderRadius: 2,
           backgroundColor: "secondary.main",
@@ -30,7 +30,7 @@ function SuccessPassword(props) {
         }}
         variant="contained"
       >
-        Connexion
+        Nouveau mot de passe
       </Button>
     </Container>
   );

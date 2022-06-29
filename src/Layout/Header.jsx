@@ -13,13 +13,17 @@ import FactCheckIcon from "@mui/icons-material/FactCheck";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ListAltIcon from "@mui/icons-material/ListAlt";
-import EqualizerIcon from '@mui/icons-material/Equalizer';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import SourceIcon from '@mui/icons-material/Source';
+import EqualizerIcon from "@mui/icons-material/Equalizer";
+import BarChartIcon from "@mui/icons-material/BarChart";
+import SourceIcon from "@mui/icons-material/Source";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import GavelIcon from '@mui/icons-material/Gavel';
+import LockResetIcon from '@mui/icons-material/LockReset';
 import logo from "../Images/logo.png";
 import API from "../API/API";
 
 import {
+  Divider,
   Drawer,
   List,
   ListItem,
@@ -110,7 +114,6 @@ function Header(props) {
             ""
           )}
 
-
           {localStorage.getItem("role") === "role_restaurateur" ? (
             <Link
               href="/restaurateur/monrestaurant"
@@ -143,6 +146,23 @@ function Header(props) {
           ) : (
             ""
           )}
+
+          {localStorage.getItem("role") === "role_restaurateur" ? (
+            <Link
+              href="/restaurateur/commandes"
+              sx={{ textDecoration: "none", color: " inherit" }}
+              className={classes.hover}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListAltIcon />
+                </ListItemButton>
+                <ListItemText>Commandes en Attente</ListItemText>
+              </ListItem>
+            </Link>
+          ) : (
+            ""
+          )}
           {localStorage.getItem("role") === "role_technique" ? (
             <Link
               href="/technique/logs"
@@ -159,7 +179,7 @@ function Header(props) {
           ) : (
             ""
           )}
-           {localStorage.getItem("role") === "role_commercial" ? (
+          {localStorage.getItem("role") === "role_commercial" ? (
             <Link
               href="/commercial/statsapp"
               sx={{ textDecoration: "none", color: " inherit" }}
@@ -223,6 +243,45 @@ function Header(props) {
           </ListItem>
         </Link>
       )}
+
+        <Divider sx={{my : theme.spacing(3)}}/>
+
+      <Link
+        href="/mentionlegales"
+        sx={{ textDecoration: "none", color: " inherit" }}
+        className={classes.hover}
+      >
+        <ListItem disablePadding>
+          <ListItemButton>
+            <GavelIcon/>
+          </ListItemButton>
+          <ListItemText>Mentions Legales</ListItemText>
+        </ListItem>
+      </Link>
+      <Link
+        href="/conditionsgenerales"
+        sx={{ textDecoration: "none", color: " inherit" }}
+        className={classes.hover}
+      >
+        <ListItem disablePadding>
+          <ListItemButton>
+            <AttachMoneyIcon />
+          </ListItemButton>
+          <ListItemText>Conditions Générales de Ventes</ListItemText>
+        </ListItem>
+      </Link>
+      <Link
+        href="/confidentialite"
+        sx={{ textDecoration: "none", color: " inherit" }}
+        className={classes.hover}
+      >
+        <ListItem disablePadding>
+          <ListItemButton>
+            <LockResetIcon />
+          </ListItemButton>
+          <ListItemText>Confidentialité</ListItemText>
+        </ListItem>
+      </Link>
     </List>
   );
   return (
