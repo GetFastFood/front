@@ -143,7 +143,7 @@ function LivraisonClient(props) {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-          <QRCode value={window.location.hostname + "/deliveredPage/"+idOrder} size={200} />
+          <QRCode value={window.location.protocol +"//" + window.location.hostname + ":"+window.location.port+ "/deliveredPage/"+idOrder} size={200} />
         </DialogContent>
         <DialogActions></DialogActions>
       </Dialog>

@@ -39,10 +39,16 @@ function Compte(props) {
     classAPI
       .checkPassword(values.email, values.password)
       .then((result) => {
-        if (JSON.parse(result)["refresh_token"]) {
+        console.log(result);
+        if (result["access_token"]) {
           if (typeRequest == "edit") {
-            classAPI.updateUser(localStorage.getItem("id"), values)
-              .then(() => window.location.replace("/compte"))
+            console.log("edit");
+            classAPI
+              .updateUser(localStorage.getItem("id"), values)
+              .then(() => {
+                setMessageMDP("");
+              })
+              .then(() => window.location.replace("/compte"));
           }
           if (typeRequest == "delete") {
             classAPI.deleteUser(localStorage.getItem("id"), true).then(() => {

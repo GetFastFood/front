@@ -83,7 +83,7 @@ function Home(props) {
           })}
         </Grid>
       </Container>
-      <Tracker step={2} />
+      <Tracker />
     </div>
   );
 }

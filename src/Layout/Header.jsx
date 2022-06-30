@@ -16,11 +16,13 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import SourceIcon from "@mui/icons-material/Source";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import GavelIcon from '@mui/icons-material/Gavel';
-import LockResetIcon from '@mui/icons-material/LockReset';
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import GavelIcon from "@mui/icons-material/Gavel";
+import LockResetIcon from "@mui/icons-material/LockReset";
 import logo from "../Images/logo.png";
 import API from "../API/API";
+import CloseIcon from "@mui/icons-material/Close";
+import { io } from "socket.io-client";
 
 import {
   Divider,
@@ -29,6 +31,9 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
+  Snackbar,
+  SnackbarContent,
+  Button,
 } from "@mui/material";
 
 function Header(props) {
@@ -43,7 +48,87 @@ function Header(props) {
 
   const classes = useStyles();
   const [state, setState] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const [notif, setNotif] = React.useState();
+  const [message, setMessage] = React.useState();
+  const [idResto, setIdResto] = React.useState();
   const classAPI = new API();
+  const objState = {
+    pending: "en attente",
+    cooking: "en cuisine",
+    delivering: "en route",
+    finished: "arrivée",
+  };
+
+  React.useEffect(() => {
+    const socket = io("http://91.236.239.56:3080");
+    socket.on("connect", () => console.log(socket.id));
+    socket.on("connect_error", () => {
+      setTimeout(() => socket.connect(), 5000);
+    });
+    socket.on("order", (data) => setNotif(data));
+    socket.on("disconnect", () => console.log("server disconnected"));
+
+    
+
+    if (localStorage.getItem("role") === "role_restaurateur") {
+      classAPI.getRestaurantByOwner(localStorage.getItem("id")).then((res) => {
+        setIdResto(res.restaurant._id);
+      });
+    }
+  }, []);
+
+  React.useEffect(() => {
+    console.log(notif);
+    if (notif !== undefined) {
+      if (
+        notif.user == localStorage.getItem("id") &&
+        notif.status !== "pending" &&
+        notif.status !== "declined"
+      ) {
+        setMessage("Votre commande est " + objState[notif.status]);
+        setOpen(true);
+      }
+
+      if (
+        notif.user == localStorage.getItem("id") &&
+        notif.status == "declined"
+      ) {
+        setMessage("Votre commande a été annulée par le restaurant");
+        setOpen(true);
+      }
+
+      if (
+        localStorage.getItem("role") == "role_livreur" &&
+        notif.status == "cooking"
+      ) {
+        setMessage("Une commande s'apprête à être préparée");
+        setOpen(true);
+      }
+
+      if (
+        localStorage.getItem("role") == "role_restaurateur" &&
+        notif.restaurant == idResto &&
+        notif.status == "pending"
+      ) {
+        setMessage(
+          "Une nouvelle commande est arrivée, découvrez et acceptez la dans l'onglet Commandes en Attente"
+        );
+        setOpen(true);
+      }
+
+      if (
+        localStorage.getItem("role") == "role_restaurateur" &&
+        notif.restaurant == idResto &&
+        notif.status == "finished"
+      ) {
+        setMessage(
+          "La commande "+ notif._id +" a été livrée"
+        );
+        setOpen(true);
+      }
+    }
+  }, [notif]);
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -59,6 +144,27 @@ function Header(props) {
     classAPI.disconnect();
     window.location.replace("/");
   };
+
+  const handleCloseNotif = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setOpen(false);
+  };
+
+  const action = (
+    <React.Fragment>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleCloseNotif}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </React.Fragment>
+  );
 
   const list = (
     <List
@@ -195,6 +301,22 @@ function Header(props) {
           ) : (
             ""
           )}
+          {localStorage.getItem("role") === "role_commercial" ? (
+            <Link
+              href="/commercial/monitoringapp"
+              sx={{ textDecoration: "none", color: " inherit" }}
+              className={classes.hover}
+            >
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <EqualizerIcon />
+                </ListItemButton>
+                <ListItemText>Monitoring de l'application</ListItemText>
+              </ListItem>
+            </Link>
+          ) : (
+            ""
+          )}
           {localStorage.getItem("role") === "role_dev" ? (
             <Link
               href="/developpeurtiers/gestioncomposant/"
@@ -244,7 +366,7 @@ function Header(props) {
         </Link>
       )}
 
-        <Divider sx={{my : theme.spacing(3)}}/>
+      <Divider sx={{ my: theme.spacing(3) }} />
 
       <Link
         href="/mentionlegales"
@@ -253,7 +375,7 @@ function Header(props) {
       >
         <ListItem disablePadding>
           <ListItemButton>
-            <GavelIcon/>
+            <GavelIcon />
           </ListItemButton>
           <ListItemText>Mentions Legales</ListItemText>
         </ListItem>
@@ -282,6 +404,14 @@ function Header(props) {
           <ListItemText>Confidentialité</ListItemText>
         </ListItem>
       </Link>
+
+      <ListItem
+        className={classes.hover}
+        disabledPadding
+        sx={{ display: "flex", justifyContent: "center" }}
+      >
+        <CloseIcon onClick={() => setState(false)} />
+      </ListItem>
     </List>
   );
   return (
@@ -326,6 +456,16 @@ function Header(props) {
       <Drawer open={state} onClose={toggleDrawer(false)}>
         {list}
       </Drawer>
+
+      <Snackbar
+        open={open}
+        onClose={handleCloseNotif}
+        message="Note archived"
+        action={action}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <SnackbarContent message={message} action={action} />
+      </Snackbar>
     </>
   );
 }

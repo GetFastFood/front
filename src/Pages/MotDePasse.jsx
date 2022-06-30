@@ -26,12 +26,11 @@ function MotDePasse() {
   };
 
   const submit = () => {
-      classAPI.SendMail().then(() => {
-        //window.location.replace("/motdepasse/success");
+      classAPI.SendMail(email).then(() => {
+        window.location.replace("/motdepasse/mail");
       });
   };
 
-  //console.log(email)
   return (
     <Container
       maxWidth="sm"

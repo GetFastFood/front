@@ -122,21 +122,18 @@ export default class API {
   }
 
   getCommandeRestaurant(id) {
-
     var myHeaders = new Headers();
     myHeaders.append(
       "Authorization",
       "Bearer " + localStorage.getItem("access_token")
     );
 
-    
     var requestOptions = {
       method: "GET",
       headers: myHeaders,
       redirect: "follow",
       mode: "cors",
     };
-
 
     return fetch(this.url + "/order/restaurant/" + id, requestOptions)
       .then(function (response) {
@@ -213,12 +210,10 @@ export default class API {
       });
   }
 
-
   checkPassword(email, password) {
     var urlencoded = new URLSearchParams();
     urlencoded.append("email", email);
     urlencoded.append("password", password);
-    urlencoded.append("mode", "cors");
 
     var requestOptions = {
       method: "POST",
@@ -226,43 +221,48 @@ export default class API {
       redirect: "follow",
     };
 
-    return fetch(this.url + "/auth/login", requestOptions).then((response) =>
-      response.text()
-    );
+    return fetch(this.url + "/auth/login", requestOptions)
+      .then((response) => response.json())
+      .then((result) => {
+        return result;
+      });
   }
 
   updateUser(id, values) {
-    var urlencoded = new URLSearchParams();
-    urlencoded.append("email", values.email);
-    urlencoded.append("password", values.password);
-    urlencoded.append("firstname", values.firstname);
-    urlencoded.append("lastname", values.lastname);
-    urlencoded.append("address", values.address);
-    urlencoded.append("tel", values.tel);
-    urlencoded.append("status", true);
-    urlencoded.append("role", values.role);
+
+
+    var raw = JSON.stringify({
+      password: values.password,
+      email : values.email,
+      firstname : values.firstname,
+      lastname : values.lastname,
+      tel : values.tel,
+      status : true,
+      address : values.address,
+      role : values.role,
+    });
+
+    console.log(raw);
 
     var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
     myHeaders.append(
       "Authorization",
       "Bearer " + localStorage.getItem("access_token")
     );
-    // myHeaders.append("Content-Type", "application/json");
-    // myHeaders.append('Access-Control-Allow-Origin', 'http://localhost:8080');
-    // myHeaders.append('Access-Control-Allow-Credentials', 'true');
 
     var requestOptions = {
       method: "PUT",
-      body: urlencoded,
+      body: raw,
       headers: myHeaders,
       redirect: "follow",
       mode: "cors",
-    };
+    }
 
-    fetch(this.url + "/users/" + id, requestOptions)
-      .then((response) => response.text())
-      .then((result) => console.log(result))
-      .catch((error) => console.log("error", error));
+    return fetch(this.url + "/users/" + id, requestOptions)
+    .then((response) => response.text())
+    .then((result) => console.log(result))
+    .catch((error) => console.log("error", error));
   }
 
   deleteUser(id, localDelete) {
@@ -434,7 +434,6 @@ export default class API {
   }
 
   updateMenu(values, menuContent) {
-
     var raw = JSON.stringify({
       content: menuContent,
       description: values.description,
@@ -449,7 +448,6 @@ export default class API {
       "Bearer " + localStorage.getItem("access_token")
     );
     myHeaders.append("Content-Type", "application/json");
-
 
     var requestOptions = {
       method: "PUT",
@@ -480,7 +478,6 @@ export default class API {
       "Bearer " + localStorage.getItem("access_token")
     );
     myHeaders.append("Content-Type", "application/json");
-
 
     var requestOptions = {
       method: "POST",
@@ -516,28 +513,27 @@ export default class API {
       .catch((error) => console.log("error", error));
   }
 
-  createOrder(panier, idUser, idRestaurant,total) {
-    var panierTotal = []
+  createOrder(panier, idUser, idRestaurant, total) {
+    var panierTotal = [];
 
     panier.map((article) => {
-      console.log(article.type == "menu")
-      if(article.type == "menu"){
+      console.log(article.type == "menu");
+      if (article.type == "menu") {
         article.description.map((menuArticle) => {
-          console.log(menuArticle)
-          panierTotal = [...panierTotal, {_id :menuArticle}]
-        })
-      }else{
-        panierTotal = [...panierTotal, {_id : article._id}]
+          console.log(menuArticle);
+          panierTotal = [...panierTotal, { _id: menuArticle }];
+        });
+      } else {
+        panierTotal = [...panierTotal, { _id: article._id }];
       }
-    })
-
+    });
 
     var raw = JSON.stringify({
       user: idUser,
-      delivery : null,
+      delivery: null,
       restaurant: idRestaurant,
       price: total,
-      article : panierTotal,
+      article: panierTotal,
     });
 
     var myHeaders = new Headers();
@@ -546,7 +542,6 @@ export default class API {
       "Bearer " + localStorage.getItem("access_token")
     );
     myHeaders.append("Content-Type", "application/json");
-
 
     var requestOptions = {
       method: "POST",
@@ -563,13 +558,12 @@ export default class API {
   }
 
   updateOrder(id, status, idLivreur) {
-
-    var modif = {}
-    if(status !== undefined){
-      modif = {...modif, status : status}
+    var modif = {};
+    if (status !== undefined) {
+      modif = { ...modif, status: status };
     }
-    if(idLivreur !== undefined){
-      modif = {...modif, delivery : idLivreur}
+    if (idLivreur !== undefined) {
+      modif = { ...modif, delivery: idLivreur };
     }
 
     var raw = JSON.stringify(modif);
@@ -580,7 +574,6 @@ export default class API {
       "Bearer " + localStorage.getItem("access_token")
     );
     myHeaders.append("Content-Type", "application/json");
-
 
     var requestOptions = {
       method: "PUT",
@@ -595,16 +588,101 @@ export default class API {
       .catch((error) => console.log("error", error));
   }
 
-  SendMail() {
+  SendMail(email) {
+    var raw = JSON.stringify({
+      to: email,
+    });
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
     var requestOptions = {
       method: "POST",
-      body: JSON.stringify({to: "mattie.langlois@viacesi.fr"}),
+      headers: myHeaders,
+      body: raw,
       redirect: "follow",
     };
-    console.log(requestOptions.body)
-    return fetch(this.url + "/service/recuperation", requestOptions).then((response) =>
-      response.text()
+    return fetch(this.url + "/service/recuperation", requestOptions).then(
+      (response) => response.text()
     );
   }
 
+  getUserByMail(email) {
+
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+      mode: "cors",
+    };
+
+    return fetch(this.url + "/users/email/" + email, requestOptions)
+      .then((response) => response.json())
+      .then(function (res) {
+        return res;
+      })
+      .catch((error) => console.log("error", error));
+  }
+
+  changemdp(id, password, email, firstname, lastname, tel, address, role) {
+    var raw = JSON.stringify({
+      password: password,
+      email : email,
+      firstname : firstname,
+      lastname : lastname,
+      tel : tel,
+      status : true,
+      address : address,
+      role : role,
+    });
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var requestOptions = {
+      method: "PUT",
+      body: raw,
+      headers: myHeaders,
+      redirect: "follow",
+      mode: "cors",
+    };
+
+    fetch(this.url + "/users/recovery/" + id, requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  }
+
+  ///
+
+  testNotif() {
+    var raw = JSON.stringify({
+      user: "10001",
+      delivery: "101",
+      _id: "Je92sj93ks10Jd",
+      restaurant: "62bacf13d970c189189e3ab4",
+      status: "finished",
+      price: 493,
+      article: [{ _id: "abcde" }, { _id: "abcdee" }],
+    });
+
+    var myHeaders = new Headers();
+    myHeaders.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem("access_token")
+    );
+    myHeaders.append("Content-Type", "application/json");
+
+    var requestOptions = {
+      method: "POST",
+      body: raw,
+      headers: myHeaders,
+      redirect: "follow",
+      mode: "cors",
+    };
+
+    return fetch(this.url + "/notifications/testnotif", requestOptions)
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
+  }
 }
