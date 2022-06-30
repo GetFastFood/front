@@ -4,7 +4,6 @@ import theme from "../../Theme/Light.jsx";
 import { Container, Box } from "@mui/material";
 import { Chart, Series } from "devextreme-react/chart";
 import API from "../../API/API";
-import { useParams } from "react-router-dom";
 import Loading from "../../Components/Loading";
 
 function StatistiquesVente(props) {

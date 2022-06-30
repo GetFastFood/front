@@ -1,8 +1,7 @@
 import { Button, Typography } from "@mui/material";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import PayPal from "../Components/PayPal";
 import API from "../API/API";
-import { io } from "socket.io-client";
 
 function App() {
  const classAPI = new API()

@@ -1,18 +1,8 @@
-import theme from "../Theme/Light.jsx";
 import Typography from "@mui/material/Typography";
 import {
   Grid,
-  Link,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
+  Link
 } from "@mui/material";
-
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import FactCheckIcon from "@mui/icons-material/FactCheck";
-import StorefrontIcon from "@mui/icons-material/Storefront";
 
 function NotFound() {
   return (

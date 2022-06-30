@@ -3,7 +3,6 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Link, Button, Divider, Container, FormControl } from "@mui/material";
 import API from "../API/API";
-import axios from "axios";
 import React, { useState } from "react";
 
 function MotDePasse() {

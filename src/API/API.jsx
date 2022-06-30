@@ -229,17 +229,15 @@ export default class API {
   }
 
   updateUser(id, values) {
-
-
     var raw = JSON.stringify({
       password: values.password,
-      email : values.email,
-      firstname : values.firstname,
-      lastname : values.lastname,
-      tel : values.tel,
-      status : true,
-      address : values.address,
-      role : values.role,
+      email: values.email,
+      firstname: values.firstname,
+      lastname: values.lastname,
+      tel: values.tel,
+      status: true,
+      address: values.address,
+      role: values.role,
     });
 
     console.log(raw);
@@ -257,12 +255,12 @@ export default class API {
       headers: myHeaders,
       redirect: "follow",
       mode: "cors",
-    }
+    };
 
     return fetch(this.url + "/users/" + id, requestOptions)
-    .then((response) => response.text())
-    .then((result) => console.log(result))
-    .catch((error) => console.log("error", error));
+      .then((response) => response.text())
+      .then((result) => console.log(result))
+      .catch((error) => console.log("error", error));
   }
 
   deleteUser(id, localDelete) {
@@ -534,7 +532,7 @@ export default class API {
       restaurant: idRestaurant,
       price: total,
       article: panierTotal,
-      status : "pending"
+      status: "pending",
     });
 
     var myHeaders = new Headers();
@@ -609,7 +607,6 @@ export default class API {
   }
 
   getUserByMail(email) {
-
     var requestOptions = {
       method: "GET",
       redirect: "follow",
@@ -627,13 +624,13 @@ export default class API {
   changemdp(id, password, email, firstname, lastname, tel, address, role) {
     var raw = JSON.stringify({
       password: password,
-      email : email,
-      firstname : firstname,
-      lastname : lastname,
-      tel : tel,
-      status : true,
-      address : address,
-      role : role,
+      email: email,
+      firstname: firstname,
+      lastname: lastname,
+      tel: tel,
+      status: true,
+      address: address,
+      role: role,
     });
 
     var myHeaders = new Headers();
@@ -647,10 +644,29 @@ export default class API {
       mode: "cors",
     };
 
-    fetch(this.url + "/users/recovery/" + id, requestOptions)
+    return fetch(this.url + "/users/recovery/" + id, requestOptions)
       .then((response) => response.text())
       .then((result) => console.log(result))
       .catch((error) => console.log("error", error));
+  }
+
+  SendParrainage(email) {
+    var raw = JSON.stringify({
+      to: email,
+    });
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+    return fetch(this.url + "/service/parainage", requestOptions).then(
+      (response) => response.json()
+    );
   }
 
   ///

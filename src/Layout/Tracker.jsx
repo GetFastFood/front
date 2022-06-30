@@ -1,8 +1,4 @@
-import { BottomNavigation, Grid, Box, Divider, Container } from "@mui/material";
-import HomeIcon from "@mui/icons-material/Home";
-import StorefrontIcon from "@mui/icons-material/Storefront";
-import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
-import DinnerDiningIcon from "@mui/icons-material/DinnerDining";
+import {  Box,  Container } from "@mui/material";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";

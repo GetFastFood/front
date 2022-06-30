@@ -8,8 +8,6 @@ import RestoCard from "../Components/RestoCard";
 import Tracker from "../Layout/Tracker";
 import Banner from "../Images/logoBanner.png";
 import API from "../API/API";
-import axios from "axios";
-import banner1 from "../Images/banner1.jpg";
 
 function Home(props) {
   const classAPI = new API();
@@ -48,7 +46,7 @@ function Home(props) {
           </Typography>
 
           <Typography variant="h4" component="p" sx={{ color: "primary.dark" }}>
-            Économisez 5€
+            Économisez -25%
           </Typography>
 
           <Box display="flex" justifyContent="flex-end" alignItems="flex-end">
@@ -83,7 +81,15 @@ function Home(props) {
           })}
         </Grid>
       </Container>
-      <Tracker />
+      {localStorage.getItem("role") == undefined ||
+      localStorage.getItem("role") == null ||
+      localStorage.getItem("role") == "" ||
+      localStorage.getItem("role") == "null" ||
+      localStorage.getItem("role") == "role_client" ? (
+        <Tracker />
+      ) : (
+        ""
+      )}
     </div>
   );
 }

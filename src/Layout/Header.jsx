@@ -16,9 +16,9 @@ import ListAltIcon from "@mui/icons-material/ListAlt";
 import EqualizerIcon from "@mui/icons-material/Equalizer";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import SourceIcon from "@mui/icons-material/Source";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import GavelIcon from "@mui/icons-material/Gavel";
-import LockResetIcon from "@mui/icons-material/LockReset";
+import PolicyIcon from '@mui/icons-material/Policy';
+import ReceiptIcon from '@mui/icons-material/Receipt';
 import logo from "../Images/logo.png";
 import API from "../API/API";
 import CloseIcon from "@mui/icons-material/Close";
@@ -44,6 +44,19 @@ function Header(props) {
         color: theme.palette.secondary.main,
       },
     },
+    notOnPhone : {
+      [theme.breakpoints.up("md")]: {
+        display : "none !important",
+      },
+    },
+
+    title : {
+      transition: "0.2s",
+      "&:hover": {
+        color: theme.palette.secondary.main,
+        fontSize : "40px"
+      },
+    }
   });
 
   const classes = useStyles();
@@ -387,7 +400,7 @@ function Header(props) {
       >
         <ListItem disablePadding>
           <ListItemButton>
-            <AttachMoneyIcon />
+            <ReceiptIcon />
           </ListItemButton>
           <ListItemText>Conditions Générales de Ventes</ListItemText>
         </ListItem>
@@ -399,14 +412,14 @@ function Header(props) {
       >
         <ListItem disablePadding>
           <ListItemButton>
-            <LockResetIcon />
+            <PolicyIcon />
           </ListItemButton>
           <ListItemText>Confidentialité</ListItemText>
         </ListItem>
       </Link>
 
       <ListItem
-        className={classes.hover}
+        className={`${classes.hover} ${classes.notOnPhone}`}
         disabledPadding
         sx={{ display: "flex", justifyContent: "center" }}
       >
@@ -445,7 +458,7 @@ function Header(props) {
                 href="/"
                 underline="none"
                 color="inherit"
-                className={classes.hover}
+                className={classes.title}
               >
                 GetFast
               </Link>

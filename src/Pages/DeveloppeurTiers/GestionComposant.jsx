@@ -1,4 +1,4 @@
-import { Button, Container, Grid, Box } from "@mui/material";
+import { Button, Container, Box } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import theme from "../../Theme/Light.jsx";
 function GestionComposant(props) {

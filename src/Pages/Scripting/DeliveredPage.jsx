@@ -1,8 +1,7 @@
 import Typography from "@mui/material/Typography";
-import Grid from "@mui/material/TextField";
 import theme from "../../Theme/Light.jsx";
-import React, { Component, useEffect, useState } from "react";
-import { Container, Button, Box, Link, Divider } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Container, Divider } from "@mui/material";
 import { useParams } from "react-router-dom";
 import API from "../../API/API.jsx";
 import Loading from "../../Components/Loading.jsx";

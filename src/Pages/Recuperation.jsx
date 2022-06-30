@@ -75,7 +75,7 @@ function Recuperation(props) {
           response[0].role
         )
         .then(() => {
-          window.location.replace("/motdepasse/success");
+          window.location.replace("/connexion");
         });
     });
   };
