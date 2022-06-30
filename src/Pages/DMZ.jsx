@@ -1,27 +1,30 @@
-import { Typography } from "@mui/material";
-import React, { useState } from "react";
+import { Button, Typography } from "@mui/material";
+import React, { useState, useEffect } from "react";
 import PayPal from "../Components/PayPal";
+import API from "../API/API";
+import { io } from "socket.io-client";
 
 function App() {
-  const [checkout, setCheckOut] = useState("");
+  const [order, setOrder] = React.useState('fetching')    
+  React.useEffect(()=>{
+    const socket = io('http://91.236.239.56:3080')
+    socket.on('connect', ()=>console.log(socket.id))
+    socket.on('connect_error', ()=>{
+      setTimeout(()=>socket.connect(),5000)
+    })
+   socket.on('order', (data)=>setOrder(data))
+   socket.on('disconnect',()=>console.log('server disconnected'))
+ 
+ },[])
 
-  const responseFunction = (response) => {
-    console.log(response)
-    if (response.payStatus == "OK"){
-      setCheckOut("COMMANDE ACCEPTEE")
-    }else{
-      setCheckOut("ERREUR")
-    }
-  }
 
-  return (
-    <div className="App">
-        <PayPal returnFunc = {responseFunction} />
-        <Typography>
-          {checkout}
-        </Typography>
-    </div>
-  );
+ return (
+   <div className="App">
+     {order.delivery}
+      {console.log(order)}
+   </div>
+ )
+
 }
 
 export default App;

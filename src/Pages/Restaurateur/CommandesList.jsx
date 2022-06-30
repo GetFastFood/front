@@ -26,13 +26,15 @@ function CommandesList(props) {
   const refuserCommande = (id) => {
     classAPI
       .updateOrder(id, "declined")
-      .then(window.location.replace("/restaurateur/commandes"));
+      .then(window.location.replace("/restaurateur/commandes"))
+      .catch((err) => console.log(err));
   };
 
   const accepterCommande = (id) => {
     classAPI
       .updateOrder(id, "cooking")
-      .then(window.location.replace("/restaurateur/commandes"));
+      .then(window.location.replace("/restaurateur/commandes"))
+      .catch((err) => console.log(err));
   };
 
   return (

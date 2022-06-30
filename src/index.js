@@ -12,6 +12,7 @@ import Historique from "./Pages/Historique";
 import Recuperation from "./Pages/Recuperation";
 import Commande from "./Pages/Livreur/Commande";
 import SuccessPassword from "./Pages/SuccessPassword";
+import MailEnvoye from "./Pages/MailEnvoye";
 import LivraisonClient from "./Pages/Livreur/LivraisonClient";
 import LivraisonRestaurant from "./Pages/Livreur/LivraisonRestaurant";
 import CreerArticle from "./Pages/Restaurateur/CreerArticle";
@@ -20,6 +21,7 @@ import CreerMenu from "./Pages/Restaurateur/CreerMenu";
 import ModifierArticle from "./Pages/Restaurateur/ModifierArticle";
 import ModifierMenu from "./Pages/Restaurateur/ModifierMenu";
 import StatistiquesLogs from "./Pages/ServiceTechnique/StatistiquesLogs";
+import MonitoringApp from "./Pages/ServiceCommercial/MonitoringApp";
 import StatistiquesApplication from "./Pages/ServiceCommercial/StatistiquesApplication";
 import GestionComposant from "./Pages/DeveloppeurTiers/GestionComposant";
 import MonResto from "./Pages/Restaurateur/MonResto";
@@ -36,6 +38,7 @@ import { Box } from "@mui/material";
 import NotFound from "./Pages/NotFound";
 import Compte from "./Pages/Compte";
 import DMZ from "./Pages/DMZ";
+import DMZcopy from "./Pages/DMZcopy";
 import "./Fonts/gt-america-extended-medium.latin-webfont.woff";
 import PrivateRoute from "./API/PrivateRoute";
 import CommandesList from "./Pages/Restaurateur/CommandesList";
@@ -98,9 +101,11 @@ root.render(
 
           <Route path="/motdepasse/oublie" element={<MotDePasse />} />
 
+          <Route path="/motdepasse/mail" element={<MailEnvoye  />} />
+
           <Route path="/motdepasse/success" element={<SuccessPassword />} />
           <Route
-              path="/motdepasse/recuperation/:idUser"
+              path="/motdepasse/recuperation/:email"
               element={<Recuperation />}
             />
           <Route path="/conditionsgenerales" element={<CGV />} />
@@ -168,10 +173,17 @@ root.render(
             <Route path="/commercial/statsapp" element={<StatistiquesApplication />} />
           </Route>
 
-
+          <Route
+            path="/commercial/monitoringapp"
+            element={<PrivateRoute role="role_commercial" />}
+          >
+            <Route path="/commercial/monitoringapp" element={<MonitoringApp />} />
+          </Route>
+    
           <Route path="/deliveredPage/:idOrder" element={<DeliveredPage/>}/>
 
           <Route path="/dmz" element={<DMZ />} />
+          <Route path="/dmz2" element={<DMZcopy/>} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Box>

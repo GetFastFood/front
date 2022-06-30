@@ -25,17 +25,13 @@ function StatistiquesVente(props) {
       .getRestaurantByOwner(localStorage.getItem("id"))
       .then(function (response) {
         setIdResto(response.restaurant._id);
-        classAPI.getCommande(response.restaurant._id).then(function (response) {
+        classAPI.getCommandeRestaurant(response.restaurant._id).then(function (response) {
         setCommande(response);
         setLoaded(true);
         });
       });
   }, []);
 
-  if(loaded){
-    console.log(IdResto)
-    console.log(commande)
-  }
 
   React.useEffect(() => {
     if (loaded) {
