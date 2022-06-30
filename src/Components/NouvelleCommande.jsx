@@ -15,7 +15,7 @@ function NouvelleCommande(props) {
 
   const handleAccept = () => {
     classAPI
-    .updateOrder(props._id, undefined, localStorage.getItem("id"))
+    .updateOrder(props._id, "cooking", localStorage.getItem("id"))
     .then(() => {
       window.location.replace("/livreur/livraisonrestaurant/"+props._id)
     })
