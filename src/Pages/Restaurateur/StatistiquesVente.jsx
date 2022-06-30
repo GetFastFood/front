@@ -61,8 +61,8 @@ function StatistiquesVente(props) {
     );
   
   averagePanier =
-    commande.article.reduce((total, next) => total + next.price, 0) /
-    commande.article.length;
+    commande.restaurant.reduce((total, next) => total + next.price, 0) /
+    commande.restaurant.length;
 
     for (const element of commande.article) {
     ventesJour.push({
