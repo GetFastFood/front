@@ -1,7 +1,6 @@
 import { Typography, Container, Box, Fab, Divider } from "@mui/material";
 import theme from "../Theme/Light.jsx";
 import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
 import React, { useState, useEffect } from "react";
 import API from "../API/API.jsx";
 import Loading from "../Components/Loading";

@@ -6,9 +6,7 @@ import Typography from "@mui/material/Typography";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Box, Fab, Link } from "@mui/material";
 import theme from "../Theme/Light";
-import { Container } from "@mui/system";
 import { makeStyles } from "@mui/styles";
-import { isJsxClosingElement } from "typescript";
 
 function RestoCard(props) {
   const useStyles = makeStyles({
@@ -75,6 +73,24 @@ function RestoCard(props) {
             </Fab>
           </Link>
         </Box>
+
+        {!hourOpen ? (
+          <Typography
+            sx={{
+              backgroundColor: "primary.dark",
+              display: "inline-flex",
+              px: theme.spacing(1),
+              color: "secondary.main",
+              borderRadius: "4px",
+              boxShadow: 4,
+              fontSize: "12px",
+            }}
+          >
+            Fermé
+          </Typography>
+        ) : (
+          ""
+        )}
       </CardContent>
     </Card>
   );

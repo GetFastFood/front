@@ -1,5 +1,4 @@
 import { Typography, Container } from "@mui/material";
-import theme from "../Theme/Light.jsx";
 import BlocCommande from "../Components/BlocCommande";
 import * as React from "react";
 import API from "../API/API";

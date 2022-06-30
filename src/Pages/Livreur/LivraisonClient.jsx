@@ -1,15 +1,12 @@
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import theme from "../../Theme/Light.jsx";
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 import { Container, Button, Box } from "@mui/material";
 import QRCode from "react-qr-code";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
 import { useParams } from "react-router-dom";
 import Loading from "../../Components/Loading.jsx";
 import API from "../../API/API.jsx";

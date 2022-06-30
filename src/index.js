@@ -11,15 +11,10 @@ import MotDePasse from "./Pages/MotDePasse";
 import Historique from "./Pages/Historique";
 import Recuperation from "./Pages/Recuperation";
 import Commande from "./Pages/Livreur/Commande";
-import SuccessPassword from "./Pages/SuccessPassword";
 import MailEnvoye from "./Pages/MailEnvoye";
 import LivraisonClient from "./Pages/Livreur/LivraisonClient";
 import LivraisonRestaurant from "./Pages/Livreur/LivraisonRestaurant";
-import CreerArticle from "./Pages/Restaurateur/CreerArticle";
 import StatistiquesVente from "./Pages/Restaurateur/StatistiquesVente";
-import CreerMenu from "./Pages/Restaurateur/CreerMenu";
-import ModifierArticle from "./Pages/Restaurateur/ModifierArticle";
-import ModifierMenu from "./Pages/Restaurateur/ModifierMenu";
 import StatistiquesLogs from "./Pages/ServiceTechnique/StatistiquesLogs";
 import MonitoringApp from "./Pages/ServiceCommercial/MonitoringApp";
 import StatistiquesApplication from "./Pages/ServiceCommercial/StatistiquesApplication";
@@ -28,8 +23,7 @@ import MonResto from "./Pages/Restaurateur/MonResto";
 import Parrainage from "./Pages/Parrainage";
 import CGV from "./Pages/CGV";
 import MentionLegales from "./Pages/MentionLegales";
-import Confidentialité from "./Pages/Confidentialite";
-import Maps from "./Pages/Livreur/Maps";
+import Confidentialité from "./Pages/Confidentialite"
 import Header from "./Layout/Header";
 import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "@mui/material/styles";
@@ -103,7 +97,6 @@ root.render(
 
           <Route path="/motdepasse/mail" element={<MailEnvoye  />} />
 
-          <Route path="/motdepasse/success" element={<SuccessPassword />} />
           <Route
               path="/motdepasse/recuperation/:email"
               element={<Recuperation />}

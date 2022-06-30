@@ -19,4 +19,10 @@ code {
   font-weight: normal;
   }
 
+.MuiStepLabel-label {
+  color: white !important;
+  margin-top: 0px !important;
+  margin-bottom: 10px !important;
+}
+
   
