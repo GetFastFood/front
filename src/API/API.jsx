@@ -534,6 +534,7 @@ export default class API {
       restaurant: idRestaurant,
       price: total,
       article: panierTotal,
+      status : "pending"
     });
 
     var myHeaders = new Headers();
